@@ -3,7 +3,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { mount } from '@vue/test-utils'
-import Button from "../atoms/button/Button.vue"
+import Chip from "../../../src/components/atoms/chip/Chip.vue"
 
 const vuetify = createVuetify({
     components,
@@ -12,19 +12,23 @@ const vuetify = createVuetify({
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
-describe('Button', () => {
-    const wrapper = mount(Button, {
+describe('Chip', () => {
+    const wrapper = mount(Chip, {
         global: {
             plugins: [vuetify],
         },
         props: {
-            tnrId: 'the-tnr-id',
-            text: 'The button label'
+            text: 'The Chip text',
+            color: 'red',
+            density: 'default',
+            label: true,
+            tnrId: 'chip-tnr-id'
         }
     });
 
-    it('renders Button component', () => {
-        const btn = wrapper.find('[tnr-id="the-tnr-id"]')
-        expect(btn.exists()).toBeTruthy();
-    });
-});
+    it('should render Chip component', () => {
+        const chip = wrapper.find('[tnr-id="chip-tnr-id"]')
+
+        expect(chip.exists()).toBeTruthy()
+    })
+})

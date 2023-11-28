@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   variant?: 'text' | 'flat' | 'elevated' | 'tonal' | 'outlined' | 'plain'
-  color?: 'string'
+  color?: string
   size?: 'x-small' | 'small' | 'default' | 'large' | 'x-large'
   text: string
   withIcon?: boolean
