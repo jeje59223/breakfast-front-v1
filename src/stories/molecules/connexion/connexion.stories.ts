@@ -3,6 +3,7 @@ import Connexion from "../../../components/molecules/connexion/Connexion.vue"
 
 const meta: Meta<typeof Connexion> = {
     component: Connexion,
+    decorators: [() => ({ template: '<div style="width: 8em;"><story /></div>' })],
 }
 
 export default meta

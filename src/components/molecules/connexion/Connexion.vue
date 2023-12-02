@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import Button from "../../../components/atoms/button/Button.vue"
 import { ref } from "vue"
+import { useRouter } from "vue-router";
 
+const router = useRouter()
 const visible = ref(false)
 </script>
 
@@ -18,20 +20,19 @@ const visible = ref(false)
             @click:append-inner="visible = !visible"
         ></v-text-field>
         <div class="mb-2" tnr-id="connexion-card-forgot-password-link">
-          <router-link to="/breakfast" class="signup-link text-decoration-underline">Forgot login password?</router-link>
+          <p class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">Forgot login password?</p>
         </div>
-        <router-link to="/home" tnr-id="connexion-card-submit-button">
-          <Button
-              class="login-btn"
-              color="#007f8c"
-              size="large"
-              variant="elevated"
-              text="Login"
-              type="submit"
-          />
-        </router-link>
+        <Button
+            class="login-btn"
+            color="#007f8c"
+            size="large"
+            variant="elevated"
+            text="Login"
+            type="submit"
+            @click="router.push({ name: 'home' })"
+        />
       </v-form>
-      <p tnr-id="connexion-card-create-account-link">You don't have an account ? <router-link to="/breakfast" class="signup-link text-decoration-underline">Signup</router-link></p>
+      <p tnr-id="connexion-card-create-account-link">You don't have an account ? <span class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">Signup</span></p>
     </v-card>
 </template>
 
@@ -43,6 +44,7 @@ const visible = ref(false)
 .signup-link {
   width: fit-content;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .login-btn {
