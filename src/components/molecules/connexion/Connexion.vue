@@ -24,6 +24,7 @@ const visible = ref(false)
         </div>
         <Button
             class="login-btn"
+            tnr-id="connexion-card-submit-button"
             color="#007f8c"
             size="large"
             variant="elevated"
@@ -32,7 +33,7 @@ const visible = ref(false)
             @click="router.push({ name: 'home' })"
         />
       </v-form>
-      <p tnr-id="connexion-card-create-account-link">You don't have an account ? <span class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">Signup</span></p>
+      <p tnr-id="connexion-card-create-account-link">You don't have an account? <span class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">Signup</span></p>
     </v-card>
 </template>
 
