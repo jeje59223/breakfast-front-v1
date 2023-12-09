@@ -33,6 +33,17 @@ export const ChipWithRightIcon: Story = {
         density: 'default',
         label: true,
         text: "I'm chip with right icon",
-        appendIcon: 'mdi-heart'
+        appendIcon: 'mdi-panda'
+    }
+}
+
+export const ChipWithRightAndLeftIcon: Story = {
+    args: {
+        color: 'brown',
+        density: 'default',
+        label: true,
+        text: "I'm chip poop",
+        appendIcon: 'mdi-emoticon-poop',
+        prependIcon: 'mdi-emoticon-poop'
     }
 }
