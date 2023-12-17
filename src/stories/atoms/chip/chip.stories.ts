@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import Chip from "../../../components/atoms/chip/Chip.vue"
+import Chip from "@/components/atoms/chip/Chip.vue"
 
 const meta: Meta<typeof Chip> = {
     component: Chip,
