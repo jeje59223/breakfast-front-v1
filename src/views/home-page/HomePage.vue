@@ -1,27 +1,38 @@
 <script setup lang="ts">
 import { useJokesStore } from '@/stores/jokes'
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 import Button from '@/components/atoms/button/Button.vue'
+import i18n from '../../i18n.ts'
 
 const { joke, getRandomJoke } = useJokesStore()
 const displayResponse = ref<boolean>(false)
+const lang = ref<string>(i18n.global.locale)
 
 onBeforeMount(async () => {
-  await getRandomJoke()
+  try {
+    await getRandomJoke(lang.value)
+  } catch (err) {
+    console.error(err)
+  }
 })
 
 const showDelivery = () => {
-  displayResponse.value = true
+  displayResponse.value = !displayResponse.value
 }
+
+watch(() => lang.value, async (newVal) => {
+  i18n.global.locale = newVal
+  await getRandomJoke(newVal)
+})
 </script>
 
 <template>
   <div tnr-id="home-page">
-    <h1 tnr-id="home-page-title">Welcome to Breakfast Application</h1>
+    <h1 tnr-id="home-page-title">{{ i18n.global.t('homePageComponent.title') }}</h1>
     <div class="joke" tnr-id="home-page-joke-container">
-      <h2 class="joke-title" tnr-id="home-page-joke-container-title">Joke of day !</h2>
+      <h2 class="joke-title" tnr-id="home-page-joke-container-title">{{ i18n.global.t('homePageComponent.jokeOfDay') }}</h2>
       <p class="joke-question" tnr-id="home-page-joke-container-question" v-if="joke">{{ joke.setup }}</p>
-      <Button class="joke-button" tnr-id="home-page-joke-container-button" text="See response" color="#007f8c" @click="showDelivery"  size="large"/>
+      <Button class="joke-button" tnr-id="home-page-joke-container-button" :text="!displayResponse ? i18n.global.t('homePageComponent.seeResponse') : i18n.global.t('homePageComponent.hideResponse')" color="#007f8c" @click="showDelivery"  size="large"/>
       <div class="joke-response" tnr-id="home-page-joke-container-response" v-if="joke && displayResponse">
         <p class="joke-response-text" tnr-id="home-page-joke-container-response-text">{{joke.delivery}}</p>
         <img class="joke-response-image" src="https://media.giphy.com/media/xUA7b30EbtkaMHvRgk/giphy.gif" width="300" height="300"/>
