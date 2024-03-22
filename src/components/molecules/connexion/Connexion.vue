@@ -9,7 +9,7 @@ const visible = ref(false)
 </script>
 
 <template>
-    <v-card class="mx-auto px-6 py-8 connexion" tnr-id="connexion-card">
+    <v-card class="mx-auto px-6 py-8 mt-12 connexion" tnr-id="connexion-card">
       <v-form>
         <v-text-field class="mb-2" label="LDAP" :clearable="true" tnr-id="connexion-card-ldap-field" />
         <v-text-field
@@ -30,17 +30,17 @@ const visible = ref(false)
             size="large"
             variant="elevated"
             :text="i18n.global.t('connexionComponent.login')"
-            type="submit"
             @click="router.push({ name: 'home' })"
         />
       </v-form>
-      <p tnr-id="connexion-card-create-account-link">{{ i18n.global.t('connexionComponent.noAccount') }}<span class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">Signup</span></p>
+      <p tnr-id="connexion-card-create-account-link">{{ i18n.global.t('connexionComponent.noAccount') }}<span class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">{{ i18n.global.t('connexionComponent.signup') }}</span></p>
     </v-card>
 </template>
 
 <style scoped>
 .connexion {
   min-width: 400px;
+  padding-top: 150px;
 }
 
 .signup-link {

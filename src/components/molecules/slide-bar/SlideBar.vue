@@ -25,7 +25,7 @@ const getFullName = () => {
       >
         <v-list :nav="true">
           <v-list-item
-              prepend-avatar="https://media.licdn.com/dms/image/C4D03AQHkPOd4XyHitw/profile-displayphoto-shrink_800_800/0/1553331581640?e=1706745600&v=beta&t=29N7NxMq0h16l-OHcV2CrD2zO6409FkzhceXl4dNHUg"
+              prepend-avatar="src/assets/jc.jpeg"
               :title="getFullName()"
               :nav="true"
               tnr-id="slide-bar-user-fullname"

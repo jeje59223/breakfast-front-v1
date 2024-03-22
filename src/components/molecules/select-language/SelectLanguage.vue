@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import i18n from '../../../i18n.ts'
+import i18n from '@/i18n'
 import type { Language } from "@/models/language"
 
 const selectedLang = ref(i18n.global.locale);
@@ -27,6 +27,8 @@ languages.value = [
           id="lang-select"
           :label="i18n.global.t('selectLanguageComponent.selectLanguage')"
           :items="languages"
+          hide-selected
+          density="comfortable"
           item-title="name"
           item-value="id"
           append-icon="mdi-coffee"
@@ -39,10 +41,11 @@ languages.value = [
 <style lang="scss">
 .select-language-container {
   width: 100%;
-  height: 60px;
+  height: 70px;
   background-color: #007f8c;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   color: white;
   position: absolute;
   top: 0;
@@ -55,5 +58,13 @@ languages.value = [
 
 .v-input__append {
   margin-right: 1rem;
+}
+
+.v-text-field .v-input__details {
+  display: none;
+}
+
+.v-field.v-field {
+  height: 70px;
 }
 </style>
