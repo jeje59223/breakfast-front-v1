@@ -1,17 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import { setupI18n } from '../../setup-i18n'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { mount } from '@vue/test-utils'
 import HomePage from "../../../src/views/home-page/HomePage.vue"
-import { jokeMock } from "../../mocks/joke/joke";
+import { jokeMock } from "../../mocks/joke/joke"
 import { vi } from 'vitest'
-import {createApp, nextTick} from "vue";
+import { createApp, nextTick } from "vue"
 
 const vuetify = createVuetify({
     components,
     directives,
 })
+
+const i18n = setupI18n();
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
@@ -28,6 +31,7 @@ describe('HomePage', () => {
 
     beforeEach(() => {
         wrapper = mount(HomePage, {
+            i18n,
             global: {
                 plugins: [vuetify],
             },
@@ -44,14 +48,14 @@ describe('HomePage', () => {
         const title = wrapper.find('[tnr-id="home-page-title"]')
 
         expect(title.exists()).toBeTruthy()
-        expect(title.text()).toBe('Welcome to Breakfast Application')
+        expect(title.text()).toBe('Bienvenue sur l\'application Petit-Déjeuner')
     })
 
     it('should display question title with good text', () => {
         const questionTitle = wrapper.find('[tnr-id="home-page-joke-container-title"]')
 
         expect(questionTitle.exists()).toBeTruthy()
-        expect(questionTitle.text()).toBe('Joke of day !')
+        expect(questionTitle.text()).toBe('Blague du jour !')
     })
 
     it('should display question joke with good text', ()=> {
