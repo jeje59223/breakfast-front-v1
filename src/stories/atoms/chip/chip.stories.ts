@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import Chip from "@/components/atoms/chip/Chip.vue"
+import Chip from '@/components/atoms/chip/Chip.vue'
 
 const meta: Meta<typeof Chip> = {
     component: Chip,
@@ -13,7 +13,7 @@ export const SimpleChip: Story = {
         color: '#2c3e50',
         density: 'compact',
         label: true,
-        text: "I'm chip"
+        text: 'I\'m chip'
     }
 }
 
@@ -22,7 +22,7 @@ export const ChipWithLeftIcon: Story = {
         color: '#007f8c',
         density: 'default',
         label: true,
-        text: "I'm chip with left icon",
+        text: 'I\'m chip with left icon',
         prependIcon: 'mdi-heart'
     }
 }
@@ -32,7 +32,7 @@ export const ChipWithRightIcon: Story = {
         color: 'red',
         density: 'default',
         label: true,
-        text: "I'm chip with right icon",
+        text: 'I\'m chip with right icon',
         appendIcon: 'mdi-panda'
     }
 }
@@ -42,7 +42,7 @@ export const ChipWithRightAndLeftIcon: Story = {
         color: 'brown',
         density: 'default',
         label: true,
-        text: "I'm chip poop",
+        text: 'I\'m chip poop',
         appendIcon: 'mdi-emoticon-poop',
         prependIcon: 'mdi-emoticon-poop'
     }

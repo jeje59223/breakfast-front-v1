@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import i18n from '@/i18n'
-import type { Language } from "@/models/language"
+import type { Language } from '@/models/language'
 
-const selectedLang = ref(i18n.global.locale);
+const selectedLang = ref(i18n.global.locale)
 const languages = ref<Language[]>([])
 const changeLang = () => {
   i18n.global.locale = selectedLang.value
@@ -34,7 +34,8 @@ languages.value = [
           append-icon="mdi-coffee"
           v-model="selectedLang"
           @update:modelValue="changeLang"
-      ></v-select>
+      >
+      </v-select>
     </div>
   </div>
 </template>
@@ -65,6 +66,6 @@ languages.value = [
 }
 
 .v-field.v-field {
-  height: 70px;
+  height: 72px;
 }
 </style>

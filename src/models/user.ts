@@ -7,7 +7,7 @@ export interface User {
     email: string
     lastOrganizedBreakfastDate?: string
     nextOrganizedBreakfastDate?: string
-    role?: "USER" | "ADMIN"
+    role?: 'USER' | 'ADMIN'
     creationDate?: string
     login: {
         username: string,

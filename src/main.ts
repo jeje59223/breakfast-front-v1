@@ -1,10 +1,11 @@
 import './assets/main.css'
-import "@mdi/font/css/materialdesignicons.css";
+import '@mdi/font/css/materialdesignicons.css';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import fr from 'vuetify/lib/locale/fr'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import i18n from './i18n'
@@ -15,6 +16,10 @@ import router from './router'
 const app = createApp(App)
 
 const vuetify = createVuetify({
+    lang: {
+        locales: { fr },
+        current: 'fr',
+    },
     components,
     directives,
 })

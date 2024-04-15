@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from "@/views/home-page/HomePage.vue"
+import HomePage from '@/views/home-page/HomePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +18,11 @@ const router = createRouter({
       path: '/breakfast',
       name: 'breakfast',
       component: () => import('../views/breakfast/Breakfast.vue')
+    },
+    {
+      path: '/podium',
+      name: 'podium',
+      component: () => import('../views/podium/Podium.vue')
     },
     {
       path: '/login',

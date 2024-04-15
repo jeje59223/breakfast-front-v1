@@ -3,5 +3,5 @@
 </script>
 
 <template>
-  <h1>ACCOUNT PAGE</h1>
+  <h1 class="text-center">ACCOUNT PAGE</h1>
 </template>

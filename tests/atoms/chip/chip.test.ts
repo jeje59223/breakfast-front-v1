@@ -3,7 +3,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { mount } from '@vue/test-utils'
-import Chip from "../../../src/components/atoms/chip/Chip.vue"
+import Chip from '../../../src/components/atoms/chip/Chip.vue'
 
 const vuetify = createVuetify({
     components,
