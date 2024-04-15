@@ -1,4 +1,4 @@
-import {computed, ref, UnwrapRef} from 'vue'
+import { computed, ref, UnwrapRef } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import type { Joke } from '@/models/joke'

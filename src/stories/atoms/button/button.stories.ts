@@ -10,7 +10,7 @@ type Story = StoryObj<typeof Button>;
 
 export const ButtonWithLeftIcon: Story = {
     args: {
-        text: "I'm the button",
+        text: 'I\'m the button',
         variant: 'elevated',
         color: 'red',
         size: 'x-large',
@@ -23,7 +23,7 @@ export const ButtonWithLeftIcon: Story = {
 
 export const PrimaryRightIcon: Story = {
     args: {
-        text: "I'm the button with right icon",
+        text: 'I\'m the button with right icon',
         variant: 'elevated',
         color: '#34495e',
         size: 'x-small',

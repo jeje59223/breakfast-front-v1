@@ -40,27 +40,37 @@ watch(() => lang.value, async (newVal) => {
 </script>
 
 <template>
-  <div tnr-id="home-page" class="mt-12">
-    <h1 tnr-id="home-page-title">{{ i18n.global.t('homePageComponent.title') }}</h1>
-    <div class="joke" tnr-id="home-page-joke-container">
-      <h2 class="joke-title" tnr-id="home-page-joke-container-title">{{ i18n.global.t('homePageComponent.jokeOfDay') }}</h2>
-      <div>
-        <v-progress-circular v-if="isLoad" class="my-5" indeterminate color="#007f8c"></v-progress-circular>
-      </div>
-      <p class="joke-question" tnr-id="home-page-joke-container-question" v-if="joke && !isLoad">{{ joke.setup }}</p>
-      <Button class="joke-button" tnr-id="home-page-joke-container-button" :text="!displayResponse ? i18n.global.t('homePageComponent.seeResponse') : i18n.global.t('homePageComponent.hideResponse')" color="#007f8c" @click="showDelivery"  size="large"/>
-      <div class="joke-response" tnr-id="home-page-joke-container-response" v-if="joke && displayResponse">
-        <p class="joke-response-text" tnr-id="home-page-joke-container-response-text">{{ joke.delivery }}</p>
-        <img class="joke-response-image" src="https://media.giphy.com/media/xUA7b30EbtkaMHvRgk/giphy.gif" width="300" height="300"/>
+  <div class="home-page d-flex justify-center" tnr-id="home-page">
+    <div tnr-id="home-page-container" class="mt-12 home-page-container justify-center">
+      <h1 tnr-id="home-page-title">{{ i18n.global.t('homePageComponent.title') }}</h1>
+      <div class="joke" tnr-id="home-page-joke-container">
+        <h2 class="joke-title" tnr-id="home-page-joke-container-title">{{ i18n.global.t('homePageComponent.jokeOfDay') }}</h2>
+        <div>
+          <v-progress-circular v-if="isLoad" class="my-5" indeterminate color="#007f8c"></v-progress-circular>
+        </div>
+        <p class="joke-question" tnr-id="home-page-joke-container-question" v-if="joke && !isLoad">{{ joke.setup }}</p>
+        <Button class="joke-button" tnr-id="home-page-joke-container-button" :text="!displayResponse ? i18n.global.t('homePageComponent.seeResponse') : i18n.global.t('homePageComponent.hideResponse')" color="#007f8c" @click="showDelivery"  size="large"/>
+        <div class="joke-response" tnr-id="home-page-joke-container-response" v-if="joke && displayResponse">
+          <p class="joke-response-text" tnr-id="home-page-joke-container-response-text">{{ joke.delivery }}</p>
+          <img class="joke-response-image" src="https://media.giphy.com/media/xUA7b30EbtkaMHvRgk/giphy.gif" width="200" height="200"/>
+        </div>
       </div>
     </div>
   </div>
 
+
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 h1 {
   text-align: center;
+}
+.home-page {
+  width: 100%;
+}
+
+.home-page-container {
+  width: 60%;
 }
 
 .joke {

@@ -2,7 +2,7 @@
 import Button from '../../../components/atoms/button/Button.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import i18n from "@/i18n"
+import i18n from '@/i18n'
 
 const router = useRouter()
 const visible = ref(false)
@@ -39,6 +39,7 @@ const visible = ref(false)
 
 <style scoped>
 .connexion {
+  width: 35%;
   min-width: 400px;
   padding-top: 150px;
 }

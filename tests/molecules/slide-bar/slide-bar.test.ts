@@ -1,10 +1,13 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { mount } from '@vue/test-utils'
-import SlideBar from "../../../src/components/molecules/slide-bar/SlideBar.vue";
-import { userMoke } from "../../data/user";
+import SlideBar from '../../../src/components/molecules/slide-bar/SlideBar.vue'
+import { userMoke } from '../../data/user'
+import { useRoute } from 'vue-router'
+
+vi.mock('vue-router')
 
 const vuetify = createVuetify({
     components,
@@ -14,6 +17,14 @@ const vuetify = createVuetify({
 global.ResizeObserver = require('resize-observer-polyfill')
 
 describe('SlideBar', () => {
+    const name = 'breakfast'
+
+    useRoute.mockReturnValue({
+        query: {
+            name,
+        },
+    })
+
     const wrapper = mount(SlideBar, {
         global: {
             plugins: [vuetify],

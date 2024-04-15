@@ -42,7 +42,7 @@ const style = computed(() => ({
 }));
 
 const onClick = () => {
-  emit("click", 1)
+  emit('click', 1)
 };
 
 </script>

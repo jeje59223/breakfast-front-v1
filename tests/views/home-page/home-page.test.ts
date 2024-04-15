@@ -4,10 +4,10 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { mount } from '@vue/test-utils'
-import HomePage from "../../../src/views/home-page/HomePage.vue"
-import { jokeMock } from "../../mocks/joke/joke"
+import HomePage from '../../../src/views/home-page/HomePage.vue'
+import { jokeMock } from '../../mocks/joke/joke'
 import { vi } from 'vitest'
-import { createApp, nextTick } from "vue"
+import { createApp, nextTick } from 'vue'
 
 const vuetify = createVuetify({
     components,

@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { User } from '@/models/user'
-import i18n from "@/i18n";
+import i18n from '@/i18n'
 
 const props = defineProps<{
   user: User
 }>()
 
 const router = useRouter()
+const route = useRoute()
 
 const getFullName = () => {
   return `${props.user.firstname} ${props.user.lastname}`
@@ -16,7 +17,7 @@ const getFullName = () => {
 </script>
 
 <template>
-  <v-card tnr-id="slide-bar">
+  <v-card class="SlideBar" tnr-id="slide-bar">
     <v-layout>
       <v-navigation-drawer
           :rail="true"
@@ -35,8 +36,9 @@ const getFullName = () => {
         <v-list density="compact" :nav="true" tnr-id="slide-bar-navigation">
           <v-list-item prepend-icon="mdi-home" :title="i18n.global.t('slideBarComponent.home')" value="home" color="#007f8c" tnr-id="slide-bar-home" @click="router.push({ name: 'home' })"></v-list-item>
           <v-divider class="mb-12"></v-divider>
-          <v-list-item prepend-icon="mdi-account" :title="i18n.global.t('slideBarComponent.myAccount')" value="account" color="#007f8c" tnr-id="slide-bar-account" @click="router.push({ name: 'account' })"></v-list-item>
-          <v-list-item prepend-icon="mdi-food-croissant" :title="i18n.global.t('slideBarComponent.breakfast')" value="users" color="#007f8c" tnr-id="slide-bar-breakfast" @click="router.push({ name: 'breakfast' })"></v-list-item>
+          <v-list-item prepend-icon="mdi-account" :active="route.name === 'account'" :title="i18n.global.t('slideBarComponent.myAccount')" value="account" color="#007f8c" tnr-id="slide-bar-account" @click="router.push({ name: 'account' })"></v-list-item>
+          <v-list-item prepend-icon="mdi-food-croissant" :active="route.name === 'breakfast'" :title="i18n.global.t('slideBarComponent.breakfast')" value="users" color="#007f8c" tnr-id="slide-bar-breakfast" @click="router.push({ name: 'breakfast' })"></v-list-item>
+          <v-list-item prepend-icon="mdi-podium" :active="route.name === 'podium'" :title="i18n.global.t('slideBarComponent.top')" value="podium" color="#007f8c" tnr-id="slide-bar-podium" @click="router.push({ name: 'podium' })"></v-list-item>
         </v-list>
         <template v-slot:append>
           <div>
@@ -49,3 +51,8 @@ const getFullName = () => {
     </v-layout>
   </v-card>
 </template>
+<style scoped lang="scss">
+.SlideBar {
+  z-index: 3;
+}
+</style>

@@ -3,7 +3,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { mount } from '@vue/test-utils'
-import Button from "../../../src/components/atoms/button/Button.vue"
+import Button from '../../../src/components/atoms/button/Button.vue'
 
 const vuetify = createVuetify({
     components,
