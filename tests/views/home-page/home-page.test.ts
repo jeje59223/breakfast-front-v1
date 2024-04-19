@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import { createTestingPinia } from '@pinia/testing'
 import { setupI18n } from '../../setup-i18n'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -8,6 +9,8 @@ import HomePage from '../../../src/views/home-page/HomePage.vue'
 import { jokeMock } from '../../mocks/joke/joke'
 import { vi } from 'vitest'
 import { createApp, nextTick } from 'vue'
+import {storeToRefs} from "pinia";
+import {useLocaleStore} from "../../../src/stores/locale";
 
 const vuetify = createVuetify({
     components,
@@ -33,18 +36,22 @@ describe('HomePage', () => {
         wrapper = mount(HomePage, {
             i18n,
             global: {
-                plugins: [vuetify],
+                plugins: [vuetify, createTestingPinia()],
             },
         })
     })
 
     it('should render HomePage component ', async () => {
+        const { currentLocale } = storeToRefs(useLocaleStore())
+        currentLocale.value = 'fr'
         const home = wrapper.find('[tnr-id="home-page"]')
 
         expect(home.exists()).toBeTruthy()
     })
 
     it('should display title with good text', () => {
+        const { currentLocale } = storeToRefs(useLocaleStore())
+        currentLocale.value = 'fr'
         const title = wrapper.find('[tnr-id="home-page-title"]')
 
         expect(title.exists()).toBeTruthy()
@@ -52,6 +59,8 @@ describe('HomePage', () => {
     })
 
     it('should display question title with good text', () => {
+        const { currentLocale } = storeToRefs(useLocaleStore())
+        currentLocale.value = 'fr'
         const questionTitle = wrapper.find('[tnr-id="home-page-joke-container-title"]')
 
         expect(questionTitle.exists()).toBeTruthy()
@@ -59,6 +68,8 @@ describe('HomePage', () => {
     })
 
     it('should display question joke with good text', ()=> {
+        const { currentLocale } = storeToRefs(useLocaleStore())
+        currentLocale.value = 'fr'
         const question = wrapper.find('[tnr-id="home-page-joke-container-question"]')
 
         expect(question.exists()).toBeTruthy()
@@ -66,6 +77,8 @@ describe('HomePage', () => {
     })
 
     it('should display response when click on button', async () => {
+        const { currentLocale } = storeToRefs(useLocaleStore())
+        currentLocale.value = 'fr'
         const btn = wrapper.find('[tnr-id="home-page-joke-container-button"]')
         await btn.trigger('click')
 

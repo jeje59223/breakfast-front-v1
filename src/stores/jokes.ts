@@ -12,7 +12,8 @@ export const useJokesStore = defineStore('joke', () => {
         try {
             isLoading.value = true
             const response = await axios.get(`https://v2.jokeapi.dev/joke/Any?lang=${lang}`);
-
+            // const users = await axios.get('http://localhost:8080/users/all?page=0&size=10&sort=string');
+            // console.log(users.data.content)
             if (response.status === 200) {
                 randomJoke.value = response.data;
             } else {

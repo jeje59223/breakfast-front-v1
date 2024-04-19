@@ -1,31 +1,23 @@
 <script setup lang="ts">
 import type { User } from '@/models/user'
-import { ref } from 'vue'
-import dayjs from 'dayjs'
-import weekday from 'dayjs/plugin/weekday'
-import i18n from '@/i18n'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-
-dayjs.extend(weekday)
+import i18n from '@/i18n'
+import dayjs from 'dayjs'
+import { useLocaleStore } from '@/stores/locale'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   users: User[]
 }>();
 
+const { currentLocale } = storeToRefs(useLocaleStore())
 const router = useRouter()
-
-const usersBreak = ref(props.users)
-const nextOrganized = ref<number>(0)
+const userId = ref<User['id']>('')
 const overlay = ref<boolean>(false)
 const date = ref<string | undefined>()
-const userId = ref<User['id']>('')
+const usersBreak = ref(props.users)
 const userConnected = ref(props.users.find(user => user.lastname === 'Cnockaert'))
-
-const getUserId = (id: User['id'], date: string | undefined) => {
-  overlay.value = !overlay.value
-  nextOrganized.value++
-  return usersBreak.value.filter(user => user.id === id).map(u => ({ ...u, nbBreakfast: u.nbBreakfast++, nextOrganizedBreakfast: u.nextOrganizedBreakfastDate = date?.toString() }))
-}
 
 const setUserId = (id: User['id'], choice: string) => {
   if (choice === 'updateAccount') {
@@ -35,6 +27,31 @@ const setUserId = (id: User['id'], choice: string) => {
 
   overlay.value = !overlay.value
   userId.value = id
+}
+
+const headers = ref([
+  {
+    key: 'lastname',
+    title: i18n.global.t('datatableComponent.lastName')
+  },
+  {
+    key: 'firstname',
+    title: i18n.global.t('datatableComponent.firstname')
+  },
+  {
+    key: 'nextOrganizedBreakfastDate',
+    title: i18n.global.t('datatableComponent.nextBreakfastDate')
+  },
+  {
+    key: 'actions',
+    title: i18n.global.t('datatableComponent.actions'),
+    sortable: false
+  }
+])
+
+const getUserId = (id: User['id'], date: string | undefined) => {
+  overlay.value = !overlay.value
+  return usersBreak.value.filter(user => user.id === id).map(u => ({ ...u, nbBreakfast: u.nbBreakfast++, nextOrganizedBreakfast: u.nextOrganizedBreakfastDate = date?.toString() }))
 }
 
 const allowDate = (date: Date) => {
@@ -47,85 +64,87 @@ const allowDate = (date: Date) => {
   }, 0)
 
   return nbAppearances < 2 && (dayjs(date).isSame(dayjs(), 'day') || dayjs(date).isAfter(dayjs(), 'day')) && dayjs(date).day() === 3
-};
+}
 
-const items = [
-    { title: 'Ajouter une date pour organiser un petit déj', value: 'addBreakfastDate' },
-    { title: 'Modifier mon compte', value: 'updateAccount' },
+const itemsPerPageOptions = [
+  { value: 5, title: '5' },
+  { value: 10, title: '10' },
+  { value: 25, title: '25' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
+  { value: -1, title: i18n.global.t('datatableComponent.dataFooter.itemsPerPageAll') }
 ]
+
+watch(() => currentLocale.value, (newLocale) => {
+  currentLocale.value = newLocale
+})
 </script>
 
 <template>
-  <h1 class="mb-12 text-center">{{ i18n.global.t('datatableComponent.title') }}</h1>
-  <div class="BreakfastManagement">
+  <v-data-table :items="usersBreak" :headers="headers" :items-per-page-options="itemsPerPageOptions" hover>
+    <template v-slot:header.lastname="{ header }">
+      {{ i18n.global.t('datatableComponent.lastName') }}
+    </template>
+    <template v-slot:header.firstname="{ header }">
+      {{ i18n.global.t('datatableComponent.firstname') }}
+    </template>
+    <template v-slot:header.nextOrganizedBreakfastDate="{ header }">
+      {{ i18n.global.t('datatableComponent.nextBreakfastDate') }}
+    </template>
+    <template v-slot:header.actions="{ header }">
+      {{ i18n.global.t('datatableComponent.actions') }}
+    </template>
 
-    <v-table
-        class="BreakfastManagement--datatable"
-        fixed-header
-        height="500px"
-        hover
+    <template v-slot:item.lastname="{ item }">
+      {{ item.lastname }}
+    </template>
+    <template v-slot:item.firstname="{ item }">
+      {{ item.firstname }}
+    </template>
+    <template v-slot:item.nextOrganizedBreakfastDate="{ item }">
+      {{ item.nextOrganizedBreakfastDate && dayjs(item.nextOrganizedBreakfastDate).format(i18n.global.t('datatableComponent.breakfastDate')) }}
+    </template>
+    <template v-slot:item.actions="{ item }" >
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" color="#007f8c" size="small" :disabled="userConnected?.lastname !== item.lastname" v-bind="props"></v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+              :key="1"
+              v-model=userId
+              @click="setUserId(item.id, 'addBreakfastDate')"
+              :title="i18n.global.t('datatableComponent.menu.addBreakfastDate')"
+          >
+          </v-list-item>
+          <v-list-item
+              :key="2"
+              v-model=userId
+              @click="setUserId(item.id, 'updateAccount')"
+              :title="i18n.global.t('datatableComponent.menu.editMyAccount')"
+          >
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+  </v-data-table>
+  <v-overlay v-model="overlay" class="date-picker">
+    <v-date-picker
+        v-model="date"
+        :allowed-dates="allowDate"
+        width="400"
+        color="#007f8c"
+        :title="i18n.global.t('datatableComponent.selectDate')"
+        @update:model-value="getUserId(userId, date)"
     >
-      <thead class="BreakfastManagement--datatable">
-      <tr>
-        <th>{{ i18n.global.t('datatableComponent.lastName') }}</th>
-        <th>{{ i18n.global.t('datatableComponent.firstname') }}</th>
-        <th>{{ i18n.global.t('datatableComponent.nextBreakfastDate') }}</th>
-        <th>{{ i18n.global.t('datatableComponent.actions') }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="user in usersBreak" :key="user.lastname">
-        <td>{{ user.lastname }}</td>
-        <td>{{ user.firstname }}</td>
-        <td>{{ user.nextOrganizedBreakfastDate && dayjs(user.nextOrganizedBreakfastDate).format(i18n.global.t('datatableComponent.breakfastDate')) }}</td>
-        <td>
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn icon="mdi-dots-vertical" color="#007f8c" size="small" :disabled="userConnected?.lastname !== user.lastname" v-bind="props"></v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                  v-for="(item, i) in items"
-                  :key="i"
-                  v-model=userId
-                  @click="setUserId(user.id, item.value)"
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </td>
-      </tr>
-      <v-overlay v-model="overlay" class="date-picker">
-        <v-date-picker
-            v-model="date"
-            :allowed-dates="allowDate"
-            :locale="i18n.global.locale"
-            width="400"
-            color="#007f8c"
-            :title="i18n.global.t('datatableComponent.selectDate')"
-            @update:model-value="getUserId(userId, date)"
-        >
-          <template #header>
-            <div class="custom-header" />
-          </template>
-        </v-date-picker>
-      </v-overlay>
-      </tbody>
-    </v-table>
-  </div>
-
+      <template #header>
+        <div class="custom-header" />
+      </template>
+    </v-date-picker>
+  </v-overlay>
 </template>
 
 <style scoped lang="scss">
-.BreakfastManagement {
-  display: flex;
-  justify-content: center;
-
-  &--datatable {
-    width: 100%;
-  }
-}
 .date-picker {
   display: flex;
   align-items: center;
