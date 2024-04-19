@@ -1,10 +1,14 @@
 import type { Preview } from '@storybook/vue3'
 import { setup } from "@storybook/vue3";
-import { registerPlugins } from "../src/plugins";
+import { registerPlugins } from "../src/plugins"
+import { createPinia } from 'pinia'
+
+const pinia = createPinia();
 
 setup((app) => {
   // Registers your app's plugins into Storybook
   registerPlugins(app);
+  app.use(pinia);
 });
 
 const preview: Preview = {

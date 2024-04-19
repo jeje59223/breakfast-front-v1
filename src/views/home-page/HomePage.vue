@@ -3,16 +3,19 @@ import { useJokesStore } from '@/stores/jokes'
 import { onMounted, ref, watch } from 'vue'
 import Button from '@/components/atoms/button/Button.vue'
 import i18n from '@/i18n'
+import { storeToRefs } from 'pinia'
+import { useLocaleStore } from '@/stores/locale'
 
 const { joke, getRandomJoke, isLoading } = useJokesStore()
 const displayResponse = ref<boolean>(false)
 const lang = ref(i18n.global.locale)
 const isLoad = ref<boolean>(isLoading)
+const { currentLocale } = storeToRefs(useLocaleStore())
 
 onMounted(async () => {
   try {
     isLoad.value = true
-    await getRandomJoke(lang.value)
+    await getRandomJoke(currentLocale.value)
   } catch (err) {
     console.error(err)
   }
@@ -25,11 +28,10 @@ const showDelivery = () => {
   displayResponse.value = !displayResponse.value
 }
 
-watch(() => lang.value, async (newVal) => {
-  i18n.global.locale = newVal
+watch(() => currentLocale.value, async () => {
   try {
     isLoad.value = true
-    await getRandomJoke(newVal)
+    await getRandomJoke(currentLocale.value)
   } catch (err) {
     console.error(err)
   }

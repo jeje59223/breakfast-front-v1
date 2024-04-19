@@ -9,7 +9,7 @@ const meta: Meta<typeof DataTable> = {
 export default meta
 type Story = StoryObj<typeof DataTable>
 
-export const DataTableDafault: Story = {
+export const DatatableDefault: Story = {
     args: {
         users: fakeUsers2
     }

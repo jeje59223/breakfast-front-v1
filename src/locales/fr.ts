@@ -33,7 +33,14 @@ export default {
     nextBreakfastDate: 'PROCHAIN PETIT-DEJEUNER',
     breakfastDate: 'DD/MM/YYYY',
     selectDate: 'Sélectionner une date',
-    actions: 'ACTIONS'
+    actions: 'ACTIONS',
+    menu: {
+      editMyAccount: 'Mettre à jour mon compte',
+      addBreakfastDate: 'Ajouter une date pour organiser un petit déjeuner'
+    },
+    dataFooter: {
+      itemsPerPageAll: 'Tout'
+    }
   },
   podium: {
     title: 'TOP 3 DES MEILLEURS BOULANGERS',

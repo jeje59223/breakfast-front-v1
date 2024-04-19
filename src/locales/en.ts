@@ -26,14 +26,21 @@ export default {
   },
   datatableComponent: {
     title: 'BREAKFAST MANAGEMENT',
-    lastName: 'Lastname',
-    firstname: 'Firstname',
-    nbBreakFast: 'Number of breakfasts organized',
-    organizeBreakfast: 'Organize a breakfast',
-    nextBreakfastDate: 'Next breakfast',
+    lastName: 'LASTNAME',
+    firstname: 'FIRSTNAME',
+    nbBreakFast: 'NUMBER OF BREAKFASTS ORGANIZED',
+    organizeBreakfast: 'ORGANIZE A BREAKFAST',
+    nextBreakfastDate: 'NEXT BREAKFAST',
     breakfastDate: 'YYYY/MM/DD',
     selectDate: 'Select a date',
-    actions: 'ACTIONS'
+    actions: 'ACTIONS',
+    menu: {
+      editMyAccount: 'Update my account',
+      addBreakfastDate: 'Add a date to organize a breakfast'
+    },
+    dataFooter: {
+      itemsPerPageAll: 'All'
+    }
   },
   podium: {
     title: 'TOP 3 BEST BAKER',
