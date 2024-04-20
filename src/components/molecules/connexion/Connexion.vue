@@ -3,16 +3,36 @@ import Button from '../../../components/atoms/button/Button.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import i18n from '@/i18n'
+import { useUsersStore } from '@/stores/users'
+import { storeToRefs } from 'pinia'
+import { onBeforeMount } from 'vue'
 
 const router = useRouter()
 const visible = ref(false)
+const ldap = ref<string | undefined>()
+const password = ref<string | undefined>()
+const { getUsers, getCurrentUser } = useUsersStore()
+const { currentUser, users } = storeToRefs(useUsersStore())
+
+onBeforeMount(async () => {
+  await getUsers()
+})
+
+const loginCurrentUser = async (pseudo: string | undefined, pws: string | undefined) => {
+  await getCurrentUser(pseudo, pws)
+
+  if (currentUser.value) {
+    await router.push({ name: 'home' })
+  }
+}
 </script>
 
 <template>
     <v-card class="mx-auto px-6 py-8 mt-12 connexion" tnr-id="connexion-card">
       <v-form>
-        <v-text-field class="mb-2" label="LDAP" :clearable="true" tnr-id="connexion-card-ldap-field" />
+        <v-text-field v-model="ldap" class="mb-2" label="LDAP" :clearable="true" tnr-id="connexion-card-ldap-field" />
         <v-text-field
+            v-model="password"
             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :type="visible ? 'text' : 'password'"
             :placeholder="i18n.global.t('connexionComponent.enterYourPassword')"
@@ -30,7 +50,7 @@ const visible = ref(false)
             size="large"
             variant="elevated"
             :text="i18n.global.t('connexionComponent.login')"
-            @click="router.push({ name: 'home' })"
+            @click="loginCurrentUser(ldap, password)"
         />
       </v-form>
       <p tnr-id="connexion-card-create-account-link">{{ i18n.global.t('connexionComponent.noAccount') }}<span class="signup-link text-decoration-underline" @click="router.push({ name: 'home' })">{{ i18n.global.t('connexionComponent.signup') }}</span></p>

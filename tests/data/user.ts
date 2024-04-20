@@ -8,7 +8,7 @@ export const userMoke: User = {
     creationDate: '2023-02-12',
     id: '1',
     email: 'jerome.cnockaert@leroymerlin.fr',
-    picture: 'https://media.licdn.com/dms/image/C4D03AQHkPOd4XyHitw/profile-displayphoto-shrink_800_800/0/1553331581640?e=1706745600&v=beta&t=29N7NxMq0h16l-OHcV2CrD2zO6409FkzhceXl4dNHUg',
+    picture: 'src/assets/jc.jpeg',
     login: {
         username: '10009628',
         password: 'ler123'
@@ -24,7 +24,7 @@ export const fakeUsers2: User[] = [
             username: '10009628',
             password: '12345',
         },
-        picture: 'https://media.licdn.com/dms/image/C4D03AQHkPOd4XyHitw/profile-displayphoto-shrink_800_800/0/1553331581640?e=1706745600&v=beta&t=29N7NxMq0h16l-OHcV2CrD2zO6409FkzhceXl4dNHUg',
+        picture: 'src/assets/jc.jpeg',
         role: 'ADMIN',
         nbBreakfast: 3,
         nextOrganizedBreakfastDate: undefined,
@@ -37,7 +37,7 @@ export const fakeUsers2: User[] = [
         email: 'sanni.korpi@example.com',
         login: {
             username: 'purpleladybug163',
-            password: '123456789',
+            password: '123',
         },
         picture: 'https://randomuser.me/api/portraits/women/90.jpg',
         role: 'USER',
