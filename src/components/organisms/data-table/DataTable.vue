@@ -6,6 +6,7 @@ import i18n from '@/i18n'
 import dayjs from 'dayjs'
 import { useLocaleStore } from '@/stores/locale'
 import { storeToRefs } from 'pinia'
+import { useUsersStore } from '@/stores/users'
 
 const props = defineProps<{
   users: User[]
@@ -17,7 +18,8 @@ const userId = ref<User['id']>('')
 const overlay = ref<boolean>(false)
 const date = ref<string | undefined>()
 const usersBreak = ref(props.users)
-const userConnected = ref(props.users.find(user => user.lastname === 'Cnockaert'))
+const { currentUser } = storeToRefs(useUsersStore())
+const userConnected = ref<User | undefined>(currentUser.value)
 
 const setUserId = (id: User['id'], choice: string) => {
   if (choice === 'updateAccount') {

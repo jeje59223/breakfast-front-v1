@@ -1,11 +1,22 @@
 <script setup lang="ts">
-import { fakeUsers2 } from '../../../tests/data/user';
 import DataTable from '@/components/organisms/data-table/DataTable.vue'
+import { storeToRefs } from 'pinia'
+import { useUsersStore } from '@/stores/users'
+import { onBeforeMount } from 'vue'
+
+const { users } = storeToRefs(useUsersStore())
+const { getUsers } = useUsersStore()
+
+onBeforeMount(async () => {
+  await getUsers()
+})
+
+
 </script>
 
 <template>
   <div class="breakfast-page" tnr-id="breakfast-page">
-    <DataTable :users="fakeUsers2" />
+    <DataTable :users="users" />
   </div>
 </template>
 

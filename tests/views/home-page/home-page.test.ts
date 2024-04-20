@@ -9,15 +9,15 @@ import HomePage from '../../../src/views/home-page/HomePage.vue'
 import { jokeMock } from '../../mocks/joke/joke'
 import { vi } from 'vitest'
 import { createApp, nextTick } from 'vue'
-import {storeToRefs} from "pinia";
-import {useLocaleStore} from "../../../src/stores/locale";
+import { storeToRefs } from 'pinia'
+import { useLocaleStore } from '../../../src/stores/locale'
 
 const vuetify = createVuetify({
     components,
     directives,
 })
 
-const i18n = setupI18n();
+const i18n = setupI18n()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 

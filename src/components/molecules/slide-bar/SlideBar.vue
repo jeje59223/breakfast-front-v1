@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import type { User } from '@/models/user'
 import i18n from '@/i18n'
-
-const props = defineProps<{
-  user: User
-}>()
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useUsersStore } from '@/stores/users'
 
 const router = useRouter()
 const route = useRoute()
+const { currentUser } = storeToRefs(useUsersStore())
+const userConnected = computed(() => currentUser.value)
 
 const getFullName = () => {
-  return `${props.user.firstname} ${props.user.lastname}`
+  if (userConnected.value) {
+    return `${userConnected?.value?.firstname} ${userConnected?.value?.lastname}`
+  }
+  return ''
 }
 
+const disconnected = () => {
+  currentUser.value = undefined
+  router.push({ name: 'login' })
+}
 </script>
 
 <template>
@@ -26,7 +33,7 @@ const getFullName = () => {
       >
         <v-list :nav="true">
           <v-list-item
-              prepend-avatar="src/assets/jc.jpeg"
+              :prepend-avatar="userConnected?.picture"
               :title="getFullName()"
               :nav="true"
               tnr-id="slide-bar-user-fullname"
@@ -43,7 +50,7 @@ const getFullName = () => {
         <template v-slot:append>
           <div>
             <v-list density="compact" :nav="true">
-              <v-list-item prepend-icon="mdi-logout-variant" :title="i18n.global.t('slideBarComponent.logout')" value="logout" @click="router.push({ name: 'login' })"></v-list-item>
+              <v-list-item prepend-icon="mdi-logout-variant" :title="i18n.global.t('slideBarComponent.logout')" value="logout" @click="disconnected"></v-list-item>
             </v-list>
           </div>
         </template>
