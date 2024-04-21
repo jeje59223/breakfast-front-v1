@@ -24,7 +24,7 @@ export const fakeUsers2: User[] = [
             username: '10009628',
             password: '12345',
         },
-        picture: 'src/assets/jc.jpeg',
+        picture: '',
         role: 'ADMIN',
         nbBreakfast: 3,
         nextOrganizedBreakfastDate: undefined,

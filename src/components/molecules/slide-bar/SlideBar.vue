@@ -20,7 +20,11 @@ const getFullName = () => {
 const disconnected = () => {
   currentUser.value = undefined
   router.push({ name: 'login' })
+  window.location.reload()
 }
+
+const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.charAt(0).toUpperCase())
+const getFullNameUser = computed(() => `${userConnected?.value?.firstname} ${userConnected?.value?.lastname}`)
 </script>
 
 <template>
@@ -33,15 +37,26 @@ const disconnected = () => {
       >
         <v-list :nav="true">
           <v-list-item
+              v-if="userConnected && userConnected?.picture"
               :prepend-avatar="userConnected?.picture"
               :title="getFullName()"
               :nav="true"
               tnr-id="slide-bar-user-fullname"
           >
           </v-list-item>
+          <v-list-item
+              v-if="userConnected && !userConnected.picture"
+              :title="getFullName()"
+              class="SlideBar__no-picture-container"
+          >
+            <template v-slot:prepend>
+              <div class="SlideBar__no-picture">{{ getFirstLetterOfFirstname }}</div>
+            </template>
+          </v-list-item>
+          <v-list-item v-if="!userConnected"></v-list-item>
         </v-list>
         <v-list density="compact" :nav="true" tnr-id="slide-bar-navigation">
-          <v-list-item prepend-icon="mdi-home" :title="i18n.global.t('slideBarComponent.home')" value="home" color="#007f8c" tnr-id="slide-bar-home" @click="router.push({ name: 'home' })"></v-list-item>
+          <v-list-item prepend-icon="mdi-home" :title="i18n.global.t('slideBarComponent.home')" :active="route.name === 'home'" value="home" color="#007f8c" tnr-id="slide-bar-home" @click="router.push({ name: 'home' })"></v-list-item>
           <v-divider class="mb-12"></v-divider>
           <v-list-item prepend-icon="mdi-account" :active="route.name === 'account'" :title="i18n.global.t('slideBarComponent.myAccount')" value="account" color="#007f8c" tnr-id="slide-bar-account" @click="router.push({ name: 'account' })"></v-list-item>
           <v-list-item prepend-icon="mdi-food-croissant" :active="route.name === 'breakfast'" :title="i18n.global.t('slideBarComponent.breakfast')" value="users" color="#007f8c" tnr-id="slide-bar-breakfast" @click="router.push({ name: 'breakfast' })"></v-list-item>
@@ -61,5 +76,18 @@ const disconnected = () => {
 <style scoped lang="scss">
 .SlideBar {
   z-index: 3;
+
+  &__no-picture {
+    width: 30px;
+    height: 30px;
+    margin-left: -4px;
+    background-color: #767676;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 22px;
+  }
 }
 </style>
