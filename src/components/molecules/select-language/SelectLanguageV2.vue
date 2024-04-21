@@ -43,8 +43,9 @@ const selectEnglishLanguage = () => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  z-index: 2;
   color: white;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   &__choice {

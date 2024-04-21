@@ -5,6 +5,9 @@ export default {
     seeResponse: 'See response',
     title: 'Welcome to Breakfast Application',
   },
+  breakfastPageComponent: {
+    save: 'Save'
+  },
   selectLanguageComponent: {
     english: 'English 🇬🇧',
     french: 'French 🇫🇷',

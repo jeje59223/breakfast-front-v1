@@ -5,6 +5,9 @@ export default {
     seeResponse: 'Voir la réponse',
     title: 'Bienvenue sur l\'application Petit-Déjeuner',
   },
+  breakfastPageComponent: {
+    save: 'Sauvegarder'
+  },
   selectLanguageComponent: {
     english: 'Anglais 🇬🇧',
     french: 'Français 🇫🇷',
