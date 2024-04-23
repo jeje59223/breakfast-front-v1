@@ -21,7 +21,7 @@ const saveTheNextBreakfastDate = () => {
 
 <template>
   <div class="overflow-auto breakfast-page" tnr-id="breakfast-page">
-    <DataTable :users="users" class="overflow-auto" />
+    <DataTable :users="users" />
   </div>
   <BottomBarActions :text="i18n.global.t('breakfastPageComponent.save')" @save="saveTheNextBreakfastDate" />
 </template>
