@@ -8,7 +8,7 @@ const meta: Meta<typeof BottomBarActions> = {
 export default meta;
 type Story = StoryObj<typeof BottomBarActions>
 
-export const SlideBarDefault: Story = {
+export const BottomBarActionsDefault: Story = {
     args: {
         text: 'Sauvegarder'
     },
