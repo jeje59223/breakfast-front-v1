@@ -7,8 +7,7 @@ import { useUsersStore } from '@/stores/users'
 
 const router = useRouter()
 const route = useRoute()
-const { currentUser } = storeToRefs(useUsersStore())
-const userConnected = computed(() => currentUser.value)
+const { currentUser, userConnected } = storeToRefs(useUsersStore())
 
 const getFullName = () => {
   if (userConnected.value) {
@@ -24,7 +23,6 @@ const disconnected = () => {
 }
 
 const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.charAt(0).toUpperCase())
-const getFullNameUser = computed(() => `${userConnected?.value?.firstname} ${userConnected?.value?.lastname}`)
 </script>
 
 <template>
@@ -36,24 +34,29 @@ const getFullNameUser = computed(() => `${userConnected?.value?.firstname} ${use
           expand-on-hover
       >
         <v-list :nav="true">
-          <v-list-item
-              v-if="userConnected && userConnected?.picture"
-              :prepend-avatar="userConnected?.picture"
-              :title="getFullName()"
-              :nav="true"
-              tnr-id="slide-bar-user-fullname"
-          >
-          </v-list-item>
-          <v-list-item
-              v-if="userConnected && !userConnected.picture"
-              :title="getFullName()"
-              class="SlideBar__no-picture-container"
-          >
-            <template v-slot:prepend>
-              <div class="SlideBar__no-picture">{{ getFirstLetterOfFirstname }}</div>
-            </template>
-          </v-list-item>
-          <v-list-item v-if="!userConnected"></v-list-item>
+          <div>
+            <v-list-item
+                v-if="currentUser && currentUser?.picture"
+                :prepend-avatar="userConnected?.picture"
+                :title="getFullName()"
+                :nav="true"
+                tnr-id="slide-bar-user-fullname"
+            >
+            </v-list-item>
+            <v-list-item
+                v-if="currentUser && !currentUser?.picture"
+                tnr-id="SlideBar__no-picture-container"
+                :title="getFullName()"
+                class="SlideBar__no-picture-container"
+            >
+              <template v-slot:prepend>
+                <div class="SlideBar__no-picture" tnr-id="SlideBar__no-picture-container">{{ getFirstLetterOfFirstname }}</div>
+              </template>
+            </v-list-item>
+          </div>
+          <div v-if="!currentUser" tnr-id="slideBar__not-connected">
+            <v-list-item tnr-id="SlideBar__no-connected-user"></v-list-item>
+          </div>
         </v-list>
         <v-list density="compact" :nav="true" tnr-id="slide-bar-navigation">
           <v-list-item prepend-icon="mdi-home" :title="i18n.global.t('slideBarComponent.home')" :active="route.name === 'home'" value="home" color="#007f8c" tnr-id="slide-bar-home" @click="router.push({ name: 'home' })"></v-list-item>

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { User } from '@/models/user'
 import { ref } from 'vue'
 import { fakeUsers2 } from '../../tests/data/user'
+import { computed } from 'vue'
 
 export const useUsersStore = defineStore('users', () => {
     const currentUser = ref<User>()
@@ -18,10 +19,13 @@ export const useUsersStore = defineStore('users', () => {
         }
     }
 
+    const userConnected = computed(() => currentUser.value)
+
     return {
         getUsers,
         getCurrentUser,
         currentUser,
-        users
+        users,
+        userConnected
     }
 })

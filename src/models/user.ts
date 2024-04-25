@@ -1,14 +1,14 @@
 export interface User {
-    id: string
+    ldap: string
     firstname: string
     lastname: string
     picture?: string
-    nbBreakfast: number
+    numberOfBreakFastOrganised: number
     email: string
     lastOrganizedBreakfastDate?: string
     nextOrganizedBreakfastDate?: string
-    role?: 'USER' | 'ADMIN'
-    creationDate?: string
+    roles?: string[]
+    creationDate: string
     login: {
         username: string,
         password: string
