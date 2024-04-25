@@ -14,14 +14,14 @@ const props = defineProps<{
 
 const { currentLocale } = storeToRefs(useLocaleStore())
 const router = useRouter()
-const userId = ref<User['id']>('')
+const userId = ref<User['ldap']>('')
 const overlay = ref<boolean>(false)
 const date = ref<string | undefined>()
 const usersBreak = ref(props.users)
 const { currentUser } = storeToRefs(useUsersStore())
 const userConnected = ref<User | undefined>(currentUser.value)
 
-const setUserId = (id: User['id'], choice: string) => {
+const setUserId = (id: User['ldap'], choice: string) => {
   if (choice === 'updateAccount') {
     router.push({ name: 'account' })
     return
@@ -51,9 +51,9 @@ const headers = ref([
   }
 ])
 
-const getUserId = (id: User['id'], date: string | undefined) => {
+const getUserId = (id: User['ldap'], date: string | undefined) => {
   overlay.value = !overlay.value
-  return usersBreak.value.filter(user => user.id === id).map(u => ({ ...u, nbBreakfast: u.nbBreakfast++, nextOrganizedBreakfast: u.nextOrganizedBreakfastDate = date?.toString() }))
+  return usersBreak.value.filter(user => user.ldap === id).map(u => ({ ...u, nbBreakfast: u.numberOfBreakFastOrganised++, nextOrganizedBreakfast: u.nextOrganizedBreakfastDate = date?.toString() }))
 }
 
 const allowDate = (date: Date) => {
@@ -115,14 +115,14 @@ watch(() => currentLocale.value, (newLocale) => {
           <v-list-item
               :key="1"
               v-model=userId
-              @click="setUserId(item.id, 'addBreakfastDate')"
+              @click="setUserId(item.ldap, 'addBreakfastDate')"
               :title="i18n.global.t('datatableComponent.menu.addBreakfastDate')"
           >
           </v-list-item>
           <v-list-item
               :key="2"
               v-model=userId
-              @click="setUserId(item.id, 'updateAccount')"
+              @click="setUserId(item.ldap, 'updateAccount')"
               :title="i18n.global.t('datatableComponent.menu.editMyAccount')"
           >
           </v-list-item>

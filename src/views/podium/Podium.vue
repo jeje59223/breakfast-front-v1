@@ -9,7 +9,7 @@ const first = ref<string>('')
 const second = ref<string>('')
 const third = ref<string>('')
 function getTopNbBreakfast(users: User[]) {
-  users.sort((a, b) => b.nbBreakfast - a.nbBreakfast)
+  users.sort((a, b) => b.numberOfBreakFastOrganised - a.numberOfBreakFastOrganised)
   return users.slice(0, 3);
 }
 
