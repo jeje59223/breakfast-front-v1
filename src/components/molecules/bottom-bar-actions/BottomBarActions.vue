@@ -15,8 +15,8 @@ const save = () => {
 </script>
 
 <template>
-<div class="Bottom-bar-actions">
-  <Button :text="props.text" color="#007f8c" @click="save" />
+<div class="Bottom-bar-actions" tnr-id="Bottom-bar-actions">
+  <Button :text="props.text" color="#007f8c" @click="save" tnr-id="Bottom-bar-actions__save" />
 </div>
 </template>
 <style scoped lang="scss">
