@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { User } from '@/models/user'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import i18n from '@/i18n'
 import dayjs from 'dayjs'
-import { useLocaleStore } from '@/stores/locale'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
 
@@ -12,7 +11,6 @@ const props = defineProps<{
   users: User[]
 }>();
 
-const { currentLocale } = storeToRefs(useLocaleStore())
 const router = useRouter()
 const userId = ref<User['ldap']>('')
 const overlay = ref<boolean>(false)
@@ -76,37 +74,33 @@ const itemsPerPageOptions = [
   { value: 100, title: '100' },
   { value: -1, title: i18n.global.t('datatableComponent.dataFooter.itemsPerPageAll') }
 ]
-
-watch(() => currentLocale.value, (newLocale) => {
-  currentLocale.value = newLocale
-})
 </script>
 
 <template>
   <v-data-table :items="usersBreak" :headers="headers" :items-per-page-options="itemsPerPageOptions" hover>
-    <template v-slot:header.lastname="{ header }">
+    <template v-slot:[`header.lastname`]>
       {{ i18n.global.t('datatableComponent.lastName') }}
     </template>
-    <template v-slot:header.firstname="{ header }">
+    <template v-slot:[`header.firstname`]>
       {{ i18n.global.t('datatableComponent.firstname') }}
     </template>
-    <template v-slot:header.nextOrganizedBreakfastDate="{ header }">
+    <template v-slot:[`header.nextOrganizedBreakfastDate`]>
       {{ i18n.global.t('datatableComponent.nextBreakfastDate') }}
     </template>
-    <template v-slot:header.actions="{ header }">
+    <template v-slot:[`header.actions`]>
       {{ i18n.global.t('datatableComponent.actions') }}
     </template>
 
-    <template v-slot:item.lastname="{ item }">
+    <template v-slot:[`item.lastname`]="{ item }">
       {{ item.lastname }}
     </template>
-    <template v-slot:item.firstname="{ item }">
+    <template v-slot:[`item.firstname`]="{ item }">
       {{ item.firstname }}
     </template>
-    <template v-slot:item.nextOrganizedBreakfastDate="{ item }">
+    <template v-slot:[`item.nextOrganizedBreakfastDate`]="{ item }">
       {{ item.nextOrganizedBreakfastDate && dayjs(item.nextOrganizedBreakfastDate).format(i18n.global.t('datatableComponent.breakfastDate')) }}
     </template>
-    <template v-slot:item.actions="{ item }" >
+    <template v-slot:[`item.actions`]="{ item }" >
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-dots-vertical" color="#007f8c" size="small" :disabled="userConnected?.lastname !== item.lastname" v-bind="props"></v-btn>

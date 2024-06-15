@@ -28,10 +28,10 @@ const selectEnglishLanguage = () => {
 }
 </script>
 <template>
-  <div class="SelectLanguageContainer">
-    <div class="SelectLanguageContainer__choice">
-      <French @click="selectFrenchLanguage" :is-selected="isFrenchLanguageSelected" />
-      <English @click="selectEnglishLanguage" :is-selected="isEnglishLanguageSelected" />
+  <div class="SelectLanguageContainer" tnr-id="SelectLanguageContainer">
+    <div class="SelectLanguageContainer__choice" tnr-id="SelectLanguageContainer__choice">
+      <French tnr-id="SelectLanguageContainer__choice_french" @click="selectFrenchLanguage" :is-selected="isFrenchLanguageSelected" />
+      <English tnr-id="SelectLanguageContainer__choice_english" @click="selectEnglishLanguage" :is-selected="isEnglishLanguageSelected" />
     </div>
   </div>
 </template>

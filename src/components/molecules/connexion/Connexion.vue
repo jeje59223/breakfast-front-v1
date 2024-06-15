@@ -12,7 +12,7 @@ const visible = ref(false)
 const ldap = ref<string | undefined>()
 const password = ref<string | undefined>()
 const { getUsers, getCurrentUser } = useUsersStore()
-const { currentUser, users } = storeToRefs(useUsersStore())
+const { currentUser } = storeToRefs(useUsersStore())
 
 onBeforeMount(async () => {
   await getUsers()

@@ -19,6 +19,9 @@ export const useUsersStore = defineStore('users', () => {
         }
     }
 
+    // const users = await axios.get('http://localhost:8080/users/all?page=0&size=10&sort=string');
+    // console.log(users.data.content)
+
     const userConnected = computed(() => currentUser.value)
 
     return {
