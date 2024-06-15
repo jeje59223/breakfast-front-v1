@@ -1,4 +1,4 @@
-import type { User } from '@/models/user'
+import type { User } from '../../src/models/user'
 
 export const userMoke: User = {
     lastname: 'Cnockaert',
@@ -24,7 +24,7 @@ export const fakeUsers2: User[] = [
             username: '10009628',
             password: '12345',
         },
-        picture: undefined,
+        picture: 'src/assets/jc.jpeg',
         roles: ['ADMIN'],
         numberOfBreakFastOrganised: 3,
         nextOrganizedBreakfastDate: undefined,
