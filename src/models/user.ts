@@ -3,14 +3,19 @@ export interface User {
     firstname: string
     lastname: string
     picture?: string
-    numberOfBreakFastOrganised: number
     email: string
-    lastOrganizedBreakfastDate?: string
-    nextOrganizedBreakfastDate?: string
-    roles?: string[]
-    creationDate: string
+    lastOrganizedBreakfastDate?: Date // a modifier en Date
+    nextOrganizedBreakfastDate?: Date // a modifier en Date
+    numberOfBreakFastOrganised: number
+    roles?: Role[]
+    creationDate: Date // a modifier en Date
     login: {
         username: string,
         password: string
     }
+}
+
+export enum Role {
+    ADMIN = 'ADMIN',
+    USER = 'USER'
 }

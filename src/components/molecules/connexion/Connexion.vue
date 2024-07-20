@@ -9,8 +9,8 @@ import { onBeforeMount } from 'vue'
 
 const router = useRouter()
 const visible = ref(false)
-const ldap = ref<string | undefined>()
-const password = ref<string | undefined>()
+const ldap = ref<string>('')
+const password = ref<string>('')
 const { getUsers, getCurrentUser } = useUsersStore()
 const { currentUser } = storeToRefs(useUsersStore())
 
