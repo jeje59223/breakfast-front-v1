@@ -23,11 +23,13 @@ defineProps<{
     <v-icon v-if="withIcon && leftIcon"
             :start="true"
             :icon="icon"
+            tnr-id="icon-left"
     ></v-icon>
     {{text}}
     <v-icon v-if="withIcon && rightIcon"
             :end="true"
             :icon="icon"
+            tnr-id="icon-right"
     ></v-icon>
   </v-btn>
 </template>

@@ -8,7 +8,6 @@ import { useLocaleStore } from '@/stores/locale'
 
 const { joke, getRandomJoke, isLoading } = useJokesStore()
 const displayResponse = ref<boolean>(false)
-const lang = ref(i18n.global.locale)
 const isLoad = ref<boolean>(isLoading)
 const { currentLocale } = storeToRefs(useLocaleStore())
 
@@ -54,7 +53,7 @@ watch(() => currentLocale.value, async () => {
         <Button class="joke-button" tnr-id="home-page-joke-container-button" :text="!displayResponse ? i18n.global.t('homePageComponent.seeResponse') : i18n.global.t('homePageComponent.hideResponse')" color="#007f8c" @click="showDelivery"  size="large"/>
         <div class="joke-response" tnr-id="home-page-joke-container-response" v-if="joke && displayResponse">
           <p class="joke-response-text" tnr-id="home-page-joke-container-response-text">{{ joke.delivery }}</p>
-          <img class="joke-response-image" src="https://media.giphy.com/media/xUA7b30EbtkaMHvRgk/giphy.gif" width="200" height="200"/>
+          <img class="joke-response-image" src="https://media.giphy.com/media/xUA7b30EbtkaMHvRgk/giphy.gif" width="200" height="200" alt="image-joke"/>
         </div>
       </div>
     </div>

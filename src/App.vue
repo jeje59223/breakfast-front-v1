@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {RouterView, useRoute} from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import SlideBar from '@/components/molecules/slide-bar/SlideBar.vue'
 import { userMoke } from '../tests/data/user'
 import SelectLanguageV2 from '@/components/molecules/select-language/SelectLanguageV2.vue'
