@@ -11,9 +11,19 @@ import { Role, type User } from '@/models/user'
 const { users, currentUser } = storeToRefs(useUsersStore())
 const { getUsers } = useUsersStore()
 const userConnected = ref<User | undefined>(currentUser.value)
+const isLoading = ref<boolean>(false)
 
 onBeforeMount(async () => {
-  await getUsers()
+  try {
+    if (!users.value.length) {
+      isLoading.value = true
+    }
+    await getUsers()
+  } catch (err) {
+    console.log(err)
+  } finally {
+    isLoading.value = false
+  }
 })
 
 const saveTheNextBreakfastDate = async () => {
@@ -22,9 +32,12 @@ const saveTheNextBreakfastDate = async () => {
 </script>
 
 <template>
-  <h1 class="text-center mt-16 mb-4">{{ i18n.global.t('breakfastPageComponent.title') }}</h1>
+  <h1 v-if="!isLoading" class="text-center mt-16 mb-4">{{ i18n.global.t('breakfastPageComponent.title') }}</h1>
   <div class="overflow-auto breakfast-page" tnr-id="breakfast-page">
-    <DataTable :users="users" />
+    <DataTable v-if="!isLoading" :users="users" />
+    <v-overlay v-model="isLoading" class="is-loading">
+      <v-progress-circular :size="300" color="#287F8C" indeterminate></v-progress-circular>
+    </v-overlay>
   </div>
   <BottomBarActions
       :text="i18n.global.t('breakfastPageComponent.save')"
@@ -36,9 +49,15 @@ const saveTheNextBreakfastDate = async () => {
   />
 </template>
 
-<style>
+<style scoped>
 .breakfast-page {
   margin-left: 50px;
   margin-bottom: 80px;
+}
+
+.is-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
