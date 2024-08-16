@@ -2,21 +2,30 @@
 import Button from '@/components/atoms/button/Button.vue'
 
 const props = defineProps<{
-  text: string
+  text?: string
+  addNewUserButtonText?: string
+  displaySaveButton: boolean
+  displayAddNewUserButton: boolean
 }>()
 
 const emit = defineEmits<{
   (event: 'save'): void
+  (event: 'addNewUser'): void
 }>()
 
 const save = () => {
   emit('save')
 }
+
+const addNewUser = () => {
+  emit('addNewUser')
+}
 </script>
 
 <template>
 <div class="Bottom-bar-actions" tnr-id="Bottom-bar-actions">
-  <Button :text="props.text" color="#007f8c" @click="save" tnr-id="Bottom-bar-actions__save" />
+  <Button v-if="props.displaySaveButton" :text="props.text" color="#007f8c" @click="save" tnr-id="Bottom-bar-actions__save" />
+  <Button v-if="props.displayAddNewUserButton" color="#007f8c" :text="props.addNewUserButtonText" @click="addNewUser" tnr-id="Bottom-bar-actions__add-new-user" />
 </div>
 </template>
 <style scoped lang="scss">

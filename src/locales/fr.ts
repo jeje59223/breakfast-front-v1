@@ -6,6 +6,7 @@ export default {
     title: 'Bienvenue sur l\'application Petit-Déjeuner',
   },
   breakfastPageComponent: {
+    title: 'GESTION DES PETITS-DEJEUNERS',
     save: 'Sauvegarder'
   },
   selectLanguageComponent: {
@@ -28,6 +29,8 @@ export default {
     logout: 'Se déconnecter',
   },
   datatableComponent: {
+    addDate: 'Ajouter une date',
+    deleteAccount: 'Supprimer',
     title: 'GESTION DES PETITS-DEJEUNERS',
     lastName: 'NOM',
     firstname: 'PRENOM',
@@ -41,6 +44,7 @@ export default {
       editMyAccount: 'Mettre à jour mon compte',
       addBreakfastDate: 'Ajouter une date pour organiser un petit déjeuner'
     },
+    updateAccount: 'Modifier',
     dataFooter: {
       itemsPerPageAll: 'Tout'
     }

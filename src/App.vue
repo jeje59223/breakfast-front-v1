@@ -9,9 +9,11 @@ import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
 
 const { currentUser } = storeToRefs(useUsersStore())
+const { initializeUser } = useUsersStore()
 const route = useRoute()
 
 onBeforeMount(async () => {
+  initializeUser()
   if (!currentUser.value) {
     await router.push('login')
   }

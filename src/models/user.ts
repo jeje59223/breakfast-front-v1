@@ -4,11 +4,11 @@ export interface User {
     lastname: string
     picture?: string
     email: string
-    lastOrganizedBreakfastDate?: Date // a modifier en Date
-    nextOrganizedBreakfastDate?: Date // a modifier en Date
-    numberOfBreakFastOrganised: number
+    lastOrganizedBreakfastDate?: Date | null
+    nextOrganizedBreakfastDate: string | null
+    numberOfBreakFastOrganised?: number
     roles?: Role[]
-    creationDate: Date // a modifier en Date
+    creationDate?: Date
     login: {
         username: string,
         password: string

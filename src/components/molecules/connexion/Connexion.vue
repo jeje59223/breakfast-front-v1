@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import Button from '../../../components/atoms/button/Button.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import i18n from '@/i18n'
 import { useUsersStore } from '@/stores/users'
-import { storeToRefs } from 'pinia'
-import { onBeforeMount } from 'vue'
 
 const router = useRouter()
 const visible = ref(false)
 const ldap = ref<string>('')
 const password = ref<string>('')
-const { getUsers, getCurrentUser } = useUsersStore()
-const { currentUser } = storeToRefs(useUsersStore())
+const { getUsers, getCurrentUser, initializeUser } = useUsersStore()
 
-onBeforeMount(async () => {
+onMounted(async () => {
+  initializeUser()
   await getUsers()
 })
 
-const loginCurrentUser = async (pseudo: string | undefined, pws: string | undefined) => {
-  await getCurrentUser(pseudo, pws)
+const loginCurrentUser = async (pseudo: string, pws: string) => {
+  try {
+    await getCurrentUser(pseudo, pws)
 
-  if (currentUser.value) {
     await router.push({ name: 'home' })
+  } catch (error) {
+    console.error('Erreur lors de la connexion :', error)
   }
 }
 </script>

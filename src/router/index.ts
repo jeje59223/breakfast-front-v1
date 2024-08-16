@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('../views/home-page/HomePage.vue')
     },
     {
-      path: '/account',
+      path: '/account/:ldap',
       name: 'account',
       component: () => import('../views/account-page/AccountPage.vue')
     },
@@ -27,6 +27,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/login/Login.vue')
+    },
+    {
+      path: '/add-new-user',
+      name: 'add-new-user',
+      component: () => import('../views/add-new-user/AddNewUser.vue')
     },
   ]
 })

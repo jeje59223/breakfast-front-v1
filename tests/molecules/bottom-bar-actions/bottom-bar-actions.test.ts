@@ -13,18 +13,17 @@ const vuetify = createVuetify({
 
 describe('BottomBarActions', () => {
     let wrapper: VueWrapper
-    let vm: any
     beforeEach(() => {
         wrapper = mount(BottomBarActions, {
             global: {
                 plugins: [vuetify, createTestingPinia()],
             },
             props: {
-                text: 'Save'
+                text: 'Save',
+                displaySaveButton: true,
+                displayAddNewUserButton: false
             }
         }) as VueWrapper
-
-        vm = wrapper.vm as any
     })
 
     it('should render BottomBarActions correctly', async () => {
