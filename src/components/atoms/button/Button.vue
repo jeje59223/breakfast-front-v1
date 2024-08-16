@@ -3,7 +3,7 @@ defineProps<{
   variant?: 'text' | 'flat' | 'elevated' | 'tonal' | 'outlined' | 'plain'
   color?: string
   size?: 'x-small' | 'small' | 'default' | 'large' | 'x-large'
-  text: string
+  text?: string
   withIcon?: boolean
   leftIcon?: boolean
   rightIcon?: boolean
@@ -25,7 +25,7 @@ defineProps<{
             :icon="icon"
             tnr-id="icon-left"
     ></v-icon>
-    {{text}}
+    {{ text }}
     <v-icon v-if="withIcon && rightIcon"
             :end="true"
             :icon="icon"

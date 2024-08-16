@@ -5,16 +5,19 @@ import Button from '@/components/atoms/button/Button.vue'
 import i18n from '@/i18n'
 import { storeToRefs } from 'pinia'
 import { useLocaleStore } from '@/stores/locale'
+import { useUsersStore } from '@/stores/users'
 
 const { joke, getRandomJoke, isLoading } = useJokesStore()
 const displayResponse = ref<boolean>(false)
 const isLoad = ref<boolean>(isLoading)
 const { currentLocale } = storeToRefs(useLocaleStore())
+const { currentUser } = storeToRefs(useUsersStore())
 
 onMounted(async () => {
   try {
     isLoad.value = true
     await getRandomJoke(currentLocale.value)
+    sessionStorage.setItem('currentUser', JSON.stringify(currentUser.value))
   } catch (err) {
     console.error(err)
   }

@@ -24,7 +24,6 @@ global.ResizeObserver = require('resize-observer-polyfill')
 
 describe('SlideBar', () => {
     let wrapper: VueWrapper
-    let vm: any
     const name = 'breakfast'
 
     mockedUseRoute.mockReturnValue({
@@ -40,7 +39,6 @@ describe('SlideBar', () => {
             },
         }) as VueWrapper
 
-        vm = wrapper.vm as any
         const { currentUser } = storeToRefs(useUsersStore())
         currentUser.value = fakeUsers2[0]
     })
@@ -77,7 +75,6 @@ describe('SlideBar', () => {
 })
 
 describe('SlideBar with an user has picture', () => {
-    let vm: any
     let localWrapper: VueWrapper
     beforeEach(() => {
         localWrapper = mount(SlideBar, {
@@ -86,7 +83,6 @@ describe('SlideBar with an user has picture', () => {
             },
         }) as VueWrapper
 
-        vm = localWrapper.vm as any
         const { currentUser } = storeToRefs(useUsersStore())
         currentUser.value = fakeUsers2[1]
     })
@@ -104,7 +100,6 @@ describe('SlideBar with an user has picture', () => {
 })
 
 describe('SlideBar with not connected user', () => {
-    let vm: any
     let localWrapper: VueWrapper
     beforeEach(() => {
         localWrapper = mount(SlideBar, {
@@ -113,7 +108,6 @@ describe('SlideBar with not connected user', () => {
             },
         }) as VueWrapper
 
-        vm = localWrapper.vm as any
         const { currentUser } = storeToRefs(useUsersStore())
         currentUser.value = undefined
     })

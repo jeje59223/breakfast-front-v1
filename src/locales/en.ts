@@ -6,6 +6,7 @@ export default {
     title: 'Welcome to Breakfast Application',
   },
   breakfastPageComponent: {
+    title: 'BREAKFAST MANAGEMENT',
     save: 'Save'
   },
   selectLanguageComponent: {
@@ -28,6 +29,8 @@ export default {
     logout: 'Logout'
   },
   datatableComponent: {
+    addDate: 'Add date',
+    deleteAccount: 'Delete',
     title: 'BREAKFAST MANAGEMENT',
     lastName: 'LASTNAME',
     firstname: 'FIRSTNAME',
@@ -38,9 +41,10 @@ export default {
     selectDate: 'Select a date',
     actions: 'ACTIONS',
     menu: {
-      editMyAccount: 'Update my account',
+      editMyAccount: 'Edit account',
       addBreakfastDate: 'Add a date to organize a breakfast'
     },
+    updateAccount: 'Edit',
     dataFooter: {
       itemsPerPageAll: 'All'
     }

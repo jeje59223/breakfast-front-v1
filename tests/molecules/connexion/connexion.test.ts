@@ -28,7 +28,6 @@ describe('Connexion', () => {
     })
 
     let wrapper: VueWrapper
-    let vm: any
     const name = 'account'
 
     mockedUseRoute.mockReturnValue({
@@ -44,7 +43,6 @@ describe('Connexion', () => {
                 plugins: [vuetify, createTestingPinia()],
             },
         }) as VueWrapper
-        vm = wrapper.vm as any
     })
 
 

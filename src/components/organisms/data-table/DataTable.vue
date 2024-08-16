@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import type { User } from '@/models/user'
-import { ref } from 'vue'
+import { Role, type User } from '@/models/user'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import i18n from '@/i18n'
 import dayjs from 'dayjs'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
+import Button from '@/components/atoms/button/Button.vue'
+import Dialog from '@/components/molecules/dialog-alert/Dialog.vue'
+import Chip from '@/components/atoms/chip/Chip.vue'
 
 const props = defineProps<{
   users: User[]
@@ -14,22 +17,40 @@ const props = defineProps<{
 const router = useRouter()
 const userId = ref<User['ldap']>('')
 const overlay = ref<boolean>(false)
-const date = ref<string | undefined>()
+const date = ref<string>()
 const usersBreak = ref(props.users)
-const { currentUser } = storeToRefs(useUsersStore())
+const { updateUser, getUserByLdap, getUsers, deleteUser } = useUsersStore()
+const { currentUser, currentUserByLdap } = storeToRefs(useUsersStore())
 const userConnected = ref<User | undefined>(currentUser.value)
 
-const setUserId = (id: User['ldap'], choice: string) => {
-  if (choice === 'updateAccount') {
-    router.push({ name: 'account' })
-    return
-  }
+const firstname = ref<string>('')
+const lastname = ref<string>('')
+const ldap = ref<string>('')
+const email = ref<string>('')
+const picture = ref<string | undefined>('')
+const password = ref<string>('')
+const username = ref<string>('')
+const nextDate = ref<string | null>()
+const nbBreakfast = ref<number | undefined>(0)
+const isLoadingDate = ref<boolean>(false)
+const dialog = ref<boolean>(false)
+const deleteDateDialog = ref<boolean>(false)
 
+const updateAccount = (ldap: string) => {
+  router.push({ name: 'account', params: { ldap: ldap } })
+}
+
+const addBreakfastDate = (ldap: string) => {
   overlay.value = !overlay.value
-  userId.value = id
+  userId.value = ldap
 }
 
 const headers = ref([
+  {
+    key: 'picture',
+    title: 'Picture',
+    sortable: false
+  },
   {
     key: 'lastname',
     title: i18n.global.t('datatableComponent.lastName')
@@ -39,22 +60,74 @@ const headers = ref([
     title: i18n.global.t('datatableComponent.firstname')
   },
   {
+    key: 'totalBreakfast',
+    title: 'totalBreakfast',
+  },
+  {
     key: 'nextOrganizedBreakfastDate',
     title: i18n.global.t('datatableComponent.nextBreakfastDate')
   },
   {
     key: 'actions',
-    title: i18n.global.t('datatableComponent.actions'),
+    title: 'ACTIONS',
     sortable: false
   }
 ])
 
-const getUserId = (id: User['ldap'], date: string | undefined) => {
+const getUserId = async (id: User['ldap'], date: string | undefined ) => {
+  if (!date) {
+    return
+  }
+  const nextDateBreak = new Date(date)
+  const utcDate = new Date(nextDateBreak.getTime() - nextDateBreak.getTimezoneOffset() * 60000);
+  const isoDateString = utcDate.toISOString()
   overlay.value = !overlay.value
-  return usersBreak.value.filter(user => user.ldap === id).map(u => ({ ...u, nbBreakfast: u.numberOfBreakFastOrganised++, nextOrganizedBreakfast: u.nextOrganizedBreakfastDate = date?.toString() }))
+
+  try {
+    isLoadingDate.value = true
+    await getUserByLdap(id)
+    if (currentUserByLdap.value) {
+      firstname.value = currentUserByLdap.value?.firstname
+      lastname.value = currentUserByLdap.value?.lastname
+      ldap.value = currentUserByLdap.value?.ldap
+      email.value = currentUserByLdap.value?.email
+      picture.value = currentUserByLdap.value.picture
+      password.value = currentUserByLdap.value?.login.password
+      username.value = currentUserByLdap.value?.login.username
+      nbBreakfast.value = currentUserByLdap.value?.numberOfBreakFastOrganised
+      nextDate.value = currentUserByLdap.value?.nextOrganizedBreakfastDate
+    }
+
+    const userData: User = {
+      ldap: ldap.value,
+      firstname: firstname.value,
+      lastname: lastname.value,
+      picture: picture.value,
+      email: email.value,
+      lastOrganizedBreakfastDate: currentUserByLdap.value?.lastOrganizedBreakfastDate,
+      nextOrganizedBreakfastDate: isoDateString,
+      numberOfBreakFastOrganised: nbBreakfast.value && nbBreakfast.value + 1,
+      roles: currentUserByLdap.value?.roles,
+      creationDate: currentUserByLdap.value?.creationDate,
+      login: {
+        username: username.value,
+        password: password.value
+      }
+    }
+    await updateUser(id, userData)
+    await getUsers()
+  } catch (err) {
+    console.error(err)
+    throw new Error('La date n\'a pas pu être mis à jour')
+  } finally {
+    isLoadingDate.value = false
+  }
 }
 
-const allowDate = (date: Date) => {
+const allowDate = (date: string) => {
+  if (!date) {
+    return
+  }
   const nbAppearances = usersBreak.value.reduce((total, user) => {
     if (dayjs(user.nextOrganizedBreakfastDate).isSame(date, 'day')) {
       return total + 1
@@ -74,54 +147,173 @@ const itemsPerPageOptions = [
   { value: 100, title: '100' },
   { value: -1, title: i18n.global.t('datatableComponent.dataFooter.itemsPerPageAll') }
 ]
+
+watch(() => props.users, (newUsers) => {
+  usersBreak.value = newUsers;
+}, { immediate: true });
+
+const openDeleteDateConfirm = (ldap: string) => {
+  deleteDateDialog.value = true
+  userId.value = ldap
+}
+const closeDeleteDateDialog = () => {
+  deleteDateDialog.value = false
+}
+
+const deleteDate = async () => {
+  try {
+    isLoadingDate.value = true
+    await getUserByLdap(userId.value)
+    if (currentUserByLdap.value) {
+      firstname.value = currentUserByLdap.value?.firstname
+      lastname.value = currentUserByLdap.value?.lastname
+      ldap.value = currentUserByLdap.value?.ldap
+      email.value = currentUserByLdap.value?.email
+      picture.value = currentUserByLdap.value.picture
+      password.value = currentUserByLdap.value?.login.password
+      username.value = currentUserByLdap.value?.login.username
+      nbBreakfast.value = currentUserByLdap.value?.numberOfBreakFastOrganised
+      nextDate.value = currentUserByLdap.value?.nextOrganizedBreakfastDate
+    }
+
+    const userData: User = {
+      ldap: ldap.value,
+      firstname: firstname.value,
+      lastname: lastname.value,
+      picture: picture.value,
+      email: email.value,
+      lastOrganizedBreakfastDate: currentUserByLdap.value?.lastOrganizedBreakfastDate,
+      nextOrganizedBreakfastDate: null,
+      numberOfBreakFastOrganised: nbBreakfast.value && nbBreakfast.value - 1,
+      roles: currentUserByLdap.value?.roles,
+      creationDate: currentUserByLdap.value?.creationDate,
+      login: {
+        username: username.value,
+        password: password.value
+      }
+    }
+    await updateUser(userId.value, userData)
+    await getUsers()
+  } catch (err) {
+    console.error(err)
+    throw new Error('La date n\'a pas pu être mis à jour')
+  } finally {
+    isLoadingDate.value = false
+    deleteDateDialog.value = false
+  }
+}
+
+const deleteUserByLdap = async () => {
+  console.log(userId.value)
+  try {
+    await deleteUser(userId.value)
+    await getUsers()
+    alert('This user has been deleted')
+  } catch (err) {
+    console.error(err)
+  } finally {
+    dialog.value = false
+  }
+}
+
+const openDeleteConfirm = (ldap: string) => {
+  dialog.value = true
+  userId.value = ldap
+}
+
+const deleteCancel = async () => {
+  dialog.value = false
+}
 </script>
 
 <template>
-  <v-data-table :items="usersBreak" :headers="headers" :items-per-page-options="itemsPerPageOptions" hover>
+  <v-data-table
+      :items="usersBreak"
+      :headers="headers"
+      :items-per-page-options="itemsPerPageOptions"
+      hover
+      sort-asc-icon="mdi-arrow-up"
+      sort-desc-icon="mdi-arrow-down"
+  >
+    <template v-slot:[`header.picture`]>
+      PICTURE
+    </template>
     <template v-slot:[`header.lastname`]>
       {{ i18n.global.t('datatableComponent.lastName') }}
     </template>
     <template v-slot:[`header.firstname`]>
       {{ i18n.global.t('datatableComponent.firstname') }}
     </template>
+    <template v-slot:[`header.totalBreakfast`]>
+      TOTAL BREAKFAST
+    </template>
     <template v-slot:[`header.nextOrganizedBreakfastDate`]>
       {{ i18n.global.t('datatableComponent.nextBreakfastDate') }}
     </template>
-    <template v-slot:[`header.actions`]>
-      {{ i18n.global.t('datatableComponent.actions') }}
-    </template>
+    <template v-slot:[`header.actions`]></template>
 
+    <template v-slot:[`item.picture`]="{ item }">
+      <img :src="item.picture" width="40" height="40" class="datatable-user-picture"  :alt="`Avatar de ${item.firstname}`"/>
+    </template>
     <template v-slot:[`item.lastname`]="{ item }">
       {{ item.lastname }}
     </template>
     <template v-slot:[`item.firstname`]="{ item }">
       {{ item.firstname }}
     </template>
-    <template v-slot:[`item.nextOrganizedBreakfastDate`]="{ item }">
-      {{ item.nextOrganizedBreakfastDate && dayjs(item.nextOrganizedBreakfastDate).format(i18n.global.t('datatableComponent.breakfastDate')) }}
+    <template v-slot:[`item.totalBreakfast`]="{ item }">
+      <Chip v-if="item.numberOfBreakFastOrganised" color="#037E8C" density="default" tnr-id="" :label="true" :text="item?.numberOfBreakFastOrganised.toString()" />
     </template>
-    <template v-slot:[`item.actions`]="{ item }" >
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" color="#007f8c" size="small" :disabled="userConnected?.lastname !== item.lastname" v-bind="props"></v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-              :key="1"
-              v-model=userId
-              @click="setUserId(item.ldap, 'addBreakfastDate')"
-              :title="i18n.global.t('datatableComponent.menu.addBreakfastDate')"
-          >
-          </v-list-item>
-          <v-list-item
-              :key="2"
-              v-model=userId
-              @click="setUserId(item.ldap, 'updateAccount')"
-              :title="i18n.global.t('datatableComponent.menu.editMyAccount')"
-          >
-          </v-list-item>
-        </v-list>
-      </v-menu>
+    <template v-slot:[`item.nextOrganizedBreakfastDate`]="{ item }">
+      <div v-if="isLoadingDate" class="d-flex justify-center">
+        <v-progress-circular :size="20" color="#287F8C" indeterminate></v-progress-circular>
+      </div>
+      <div v-else class="d-flex align-center">
+        <p>{{ item.nextOrganizedBreakfastDate ? dayjs(item.nextOrganizedBreakfastDate).format(i18n.global.t('datatableComponent.breakfastDate')) : '' }}</p>
+        <v-tooltip text="Delete this date">
+          <template v-slot:activator="{ props }">
+            <v-icon
+                v-if="item.nextOrganizedBreakfastDate"
+                v-bind="props"
+                icon="mdi-delete-circle"
+                color="rgb(198, 17, 18)"
+                class="ml-5"
+                @click="openDeleteDateConfirm(item.ldap)"
+            >
+            </v-icon>
+          </template>
+        </v-tooltip>
+      </div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      <div class="d-flex justify-end">
+        <Button
+            :text="i18n.global.t('datatableComponent.addDate')"
+            color="#007f8c"
+            size="small"
+            variant="outlined"
+            class="mr-4"
+            :withIcon="true"
+            :leftIcon="true"
+            :disabled="userConnected?.ldap !== item.ldap && userConnected?.roles?.includes(Role.USER)"
+            icon="mdi-plus"
+            @click="addBreakfastDate(item.ldap)"
+        />
+        <Button
+            :text="i18n.global.t('datatableComponent.updateAccount')"
+            tnr-id="update-user-button"
+            size="small"
+            class="mr-4"
+            color="#333333"
+            variant="outlined"
+            :withIcon="true"
+            :leftIcon="true"
+            icon="mdi-pencil"
+            :disabled="userConnected?.ldap !== item.ldap && userConnected?.roles?.includes(Role.USER)"
+            @click="updateAccount(item.ldap)"
+        />
+        <Button v-if="userConnected?.roles?.includes(Role.ADMIN)" :text="i18n.global.t('datatableComponent.deleteAccount')" color="#c61112" variant="outlined" size="small" :withIcon="true" :leftIcon="true" icon="mdi-delete" @click="openDeleteConfirm(item.ldap)" />
+      </div>
     </template>
   </v-data-table>
   <v-overlay v-model="overlay" class="date-picker">
@@ -138,9 +330,31 @@ const itemsPerPageOptions = [
       </template>
     </v-date-picker>
   </v-overlay>
+  <Dialog
+      :display-dialog="dialog"
+      title="Delete this user"
+      content="Voulez-vous vraiment supprimer cet utilisateur ?"
+      @confirm="deleteUserByLdap"
+      @cancel="deleteCancel"
+      @update:displayDialog="dialog = $event"
+  />
+  <Dialog
+      :display-dialog="deleteDateDialog"
+      title="Delete this date"
+      content="Voulez-vous vraiment supprimer cette date ?"
+      @confirm="deleteDate"
+      @cancel="closeDeleteDateDialog"
+      @update:displayDialog="deleteDateDialog = $event"
+  />
 </template>
 
 <style scoped lang="scss">
+.datatable-user-picture {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+}
+
 .date-picker {
   display: flex;
   align-items: center;
