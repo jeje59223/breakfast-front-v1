@@ -36,7 +36,7 @@ const saveTheNextBreakfastDate = async () => {
   <div class="overflow-auto breakfast-page" tnr-id="breakfast-page">
     <DataTable v-if="!isLoading" :users="users" />
     <v-overlay v-model="isLoading" class="is-loading">
-      <v-progress-circular :size="300" color="#287F8C" indeterminate></v-progress-circular>
+      <v-progress-circular :size="150" color="#287F8C" indeterminate></v-progress-circular>
     </v-overlay>
   </div>
   <BottomBarActions
