@@ -7,6 +7,9 @@ class AuthService {
       password: user.password
     });
   }
+  logout() {
+    return axios.get('/accounts/logout')
+}
 }
 
 export default new AuthService();

@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async login(user) {
+            // eslint-disable-next-line no-useless-catch
             try {
                 await AuthService.login(user);
                 this.loggedIn = true;
@@ -14,5 +15,8 @@ export const useAuthStore = defineStore('auth', {
                 throw error;
             }
         },
+        async logout() {
+            await AuthService.logout()
+        }
     }
 });
