@@ -30,7 +30,7 @@ export default {
   },
   datatableComponent: {
     addDate: 'Add date',
-    deleteAccount: 'Delete',
+    deleteAccount: 'Delete this account',
     title: 'BREAKFAST MANAGEMENT',
     lastName: 'LASTNAME',
     firstname: 'FIRSTNAME',
@@ -44,7 +44,7 @@ export default {
       editMyAccount: 'Edit account',
       addBreakfastDate: 'Add a date to organize a breakfast'
     },
-    updateAccount: 'Edit',
+    updateAccount: 'Edit this user account',
     dataFooter: {
       itemsPerPageAll: 'All'
     }

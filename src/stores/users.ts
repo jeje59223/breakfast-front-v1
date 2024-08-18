@@ -19,13 +19,21 @@ export const useUsersStore = defineStore('users', () => {
         }
     }
 
+    const clearSessionStorage = async () => {
+        await sessionStorage.clear()
+        currentUser.value = undefined
+        await router.push({ name: 'login' })
+    }
+
     const getUsers = async () => {
         try {
             const getCollaborators = await axios.get('/api/users/all?page=0&size=30&sort=string');
             users.value = getCollaborators.data.content
         } catch (err) {
-            console.error('ERROR', err)
-            throw new Error(err)
+            if (err.response.status === 403) {
+                await clearSessionStorage()
+            }
+            throw new Error('Get users error', err)
         }
     }
 
@@ -44,6 +52,9 @@ export const useUsersStore = defineStore('users', () => {
                 const getCollaborators = await axios.get('/api/users/all?page=0&size=30&sort=string')
                 users.value = await getCollaborators.data.content
             } catch (err) {
+                if (err.response.status === 403) {
+                    await clearSessionStorage()
+                }
                 throw new Error('Get users error', err)
             }
 
@@ -65,6 +76,9 @@ export const useUsersStore = defineStore('users', () => {
             const result = await axios.get(`/api/users/${ldap}`)
             userByLdap.value = result.data
         } catch (err) {
+            if (err.response.status === 403) {
+                await clearSessionStorage()
+            }
             throw new Error('Get user by LDAP error', err)
         }
     }
@@ -74,8 +88,10 @@ export const useUsersStore = defineStore('users', () => {
             const response = await axios.patch(`/api/users/${ldap}`, userData)
             return response.data
         } catch (err) {
-            console.error('Update user error', err)
-            throw err
+            if (err.response.status === 403) {
+                await clearSessionStorage()
+            }
+            throw new Error('Update user error', err)
         }
     }
 
@@ -84,8 +100,10 @@ export const useUsersStore = defineStore('users', () => {
             const response = await axios.post('/api/users', newUser)
             return response.data
         } catch (err) {
-            console.error('Update user error', err)
-            throw err
+            if (err.response.status === 403) {
+                await clearSessionStorage()
+            }
+            throw new Error('Add new user error', err)
         }
     }
 
@@ -94,8 +112,10 @@ export const useUsersStore = defineStore('users', () => {
             const response = await axios.delete(`/api/users/${ldap}`)
             return response.data
         } catch (err) {
-            console.error('Delete user error', err)
-            throw err
+            if (err.response.status === 403) {
+                await clearSessionStorage()
+            }
+            throw new Error('Delete user error', err)
         }
     }
 

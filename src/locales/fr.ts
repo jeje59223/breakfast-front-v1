@@ -30,7 +30,7 @@ export default {
   },
   datatableComponent: {
     addDate: 'Ajouter une date',
-    deleteAccount: 'Supprimer',
+    deleteAccount: 'Supprimer ce compte',
     title: 'GESTION DES PETITS-DEJEUNERS',
     lastName: 'NOM',
     firstname: 'PRENOM',
@@ -44,7 +44,7 @@ export default {
       editMyAccount: 'Mettre à jour mon compte',
       addBreakfastDate: 'Ajouter une date pour organiser un petit déjeuner'
     },
-    updateAccount: 'Modifier',
+    updateAccount: 'Modifier ce compte utilisateur',
     dataFooter: {
       itemsPerPageAll: 'Tout'
     }

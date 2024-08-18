@@ -6,7 +6,6 @@ import i18n from '@/i18n'
 import dayjs from 'dayjs'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/stores/users'
-import Button from '@/components/atoms/button/Button.vue'
 import Dialog from '@/components/molecules/dialog-alert/Dialog.vue'
 import Chip from '@/components/atoms/chip/Chip.vue'
 
@@ -275,9 +274,9 @@ const deleteCancel = async () => {
             <v-icon
                 v-if="item.nextOrganizedBreakfastDate"
                 v-bind="props"
-                icon="mdi-delete-circle"
+                icon="mdi-alpha-x-circle-outline"
                 color="rgb(198, 17, 18)"
-                class="ml-5"
+                class="ml-4"
                 @click="openDeleteDateConfirm(item.ldap)"
             >
             </v-icon>
@@ -287,32 +286,43 @@ const deleteCancel = async () => {
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <div class="d-flex justify-end">
-        <Button
-            :text="i18n.global.t('datatableComponent.addDate')"
-            color="#007f8c"
-            size="small"
-            variant="outlined"
-            class="mr-4"
-            :withIcon="true"
-            :leftIcon="true"
-            :disabled="userConnected?.ldap !== item.ldap && userConnected?.roles?.includes(Role.USER)"
-            icon="mdi-plus"
-            @click="addBreakfastDate(item.ldap)"
-        />
-        <Button
-            :text="i18n.global.t('datatableComponent.updateAccount')"
-            tnr-id="update-user-button"
-            size="small"
-            class="mr-4"
-            color="#333333"
-            variant="outlined"
-            :withIcon="true"
-            :leftIcon="true"
-            icon="mdi-pencil"
-            :disabled="userConnected?.ldap !== item.ldap && userConnected?.roles?.includes(Role.USER)"
-            @click="updateAccount(item.ldap)"
-        />
-        <Button v-if="userConnected?.roles?.includes(Role.ADMIN)" :text="i18n.global.t('datatableComponent.deleteAccount')" color="#c61112" variant="outlined" size="small" :withIcon="true" :leftIcon="true" icon="mdi-delete" @click="openDeleteConfirm(item.ldap)" />
+        <v-tooltip :text="i18n.global.t('datatableComponent.addDate')">
+          <template v-slot:activator="{ props }">
+            <v-icon
+                v-bind="props"
+                icon="mdi-calendar-blank"
+                color="#007f8c"
+                class="ml-4"
+                @click="addBreakfastDate(item.ldap)"
+            >
+            </v-icon>
+          </template>
+        </v-tooltip>
+        <v-tooltip :text="i18n.global.t('datatableComponent.updateAccount')">
+          <template v-slot:activator="{ props }">
+            <v-icon
+                v-bind="props"
+                icon="mdi-pencil"
+                color="#333333"
+                class="ml-4"
+                @click="updateAccount(item.ldap)"
+            >
+            </v-icon>
+          </template>
+        </v-tooltip>
+        <v-tooltip :text="i18n.global.t('datatableComponent.deleteAccount')">
+          <template v-slot:activator="{ props }">
+            <v-icon
+                v-if="userConnected?.roles?.includes(Role.ADMIN)"
+                v-bind="props"
+                icon="mdi-delete"
+                color="#c61112"
+                class="ml-4"
+                @click="openDeleteConfirm(item.ldap)"
+            >
+            </v-icon>
+          </template>
+        </v-tooltip>
       </div>
     </template>
   </v-data-table>
