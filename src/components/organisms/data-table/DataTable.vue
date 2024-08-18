@@ -59,8 +59,8 @@ const headers = ref([
     title: i18n.global.t('datatableComponent.firstname')
   },
   {
-    key: 'totalBreakfast',
-    title: 'totalBreakfast',
+    key: 'numberOfBreakFastOrganised',
+    title: 'Total Breakfast'
   },
   {
     key: 'nextOrganizedBreakfastDate',
@@ -243,7 +243,7 @@ const deleteCancel = async () => {
     <template v-slot:[`header.firstname`]>
       {{ i18n.global.t('datatableComponent.firstname') }}
     </template>
-    <template v-slot:[`header.totalBreakfast`]>
+    <template v-slot:[`header.numberOfBreakFastOrganised`]>
       TOTAL BREAKFAST
     </template>
     <template v-slot:[`header.nextOrganizedBreakfastDate`]>
@@ -260,7 +260,7 @@ const deleteCancel = async () => {
     <template v-slot:[`item.firstname`]="{ item }">
       {{ item.firstname }}
     </template>
-    <template v-slot:[`item.totalBreakfast`]="{ item }">
+    <template v-slot:[`item.numberOfBreakFastOrganised`]="{ item }">
       <Chip v-if="item.numberOfBreakFastOrganised" color="#037E8C" density="default" tnr-id="" :label="true" :text="item?.numberOfBreakFastOrganised.toString()" />
     </template>
     <template v-slot:[`item.nextOrganizedBreakfastDate`]="{ item }">
