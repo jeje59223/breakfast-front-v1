@@ -9,11 +9,10 @@ const router = useRouter()
 const visible = ref(false)
 const ldap = ref<string>('')
 const password = ref<string>('')
-const { getUsers, getCurrentUser, initializeUser } = useUsersStore()
+const { getCurrentUser, initializeUser } = useUsersStore()
 
 onMounted(async () => {
   initializeUser()
-  await getUsers()
 })
 
 const loginCurrentUser = async (pseudo: string, pws: string) => {

@@ -7,6 +7,7 @@ import { useUsersStore } from '@/stores/users'
 
 const router = useRouter()
 const route = useRoute()
+const { disconnectUser } = useUsersStore()
 const { currentUser, userConnected } = storeToRefs(useUsersStore())
 
 const getFullName = () => {
@@ -17,9 +18,7 @@ const getFullName = () => {
 }
 
 const disconnected = () => {
-  currentUser.value = undefined
-  router.push({ name: 'login' })
-  window.location.reload()
+  disconnectUser()
 }
 
 const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.charAt(0).toUpperCase())
@@ -61,7 +60,7 @@ const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.
         <v-list density="compact" :nav="true" tnr-id="slide-bar-navigation">
           <v-list-item prepend-icon="mdi-home" :title="i18n.global.t('slideBarComponent.home')" :active="route.name === 'home'" value="home" color="#007f8c" tnr-id="slide-bar-home" @click="router.push({ name: 'home' })"></v-list-item>
           <v-divider class="mb-12"></v-divider>
-          <v-list-item prepend-icon="mdi-account" :active="route.name === 'account'" :title="i18n.global.t('slideBarComponent.myAccount')" value="account" color="#007f8c" tnr-id="slide-bar-account" @click="router.push({ name: 'account', params: { ldap: userConnected.ldap } })"></v-list-item>
+          <v-list-item prepend-icon="mdi-account" :active="route.name === 'account'" :title="i18n.global.t('slideBarComponent.myAccount')" value="account" color="#007f8c" tnr-id="slide-bar-account" @click="router.push({ name: 'account', params: { ldap: userConnected?.ldap } })"></v-list-item>
           <v-list-item prepend-icon="mdi-food-croissant" :active="route.name === 'breakfast'" :title="i18n.global.t('slideBarComponent.breakfast')" value="users" color="#007f8c" tnr-id="slide-bar-breakfast" @click="router.push({ name: 'breakfast' })"></v-list-item>
           <v-list-item prepend-icon="mdi-podium" :active="route.name === 'podium'" :title="i18n.global.t('slideBarComponent.top')" value="podium" color="#007f8c" tnr-id="slide-bar-podium" @click="router.push({ name: 'podium' })"></v-list-item>
         </v-list>

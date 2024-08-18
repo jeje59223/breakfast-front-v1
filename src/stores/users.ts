@@ -119,11 +119,17 @@ export const useUsersStore = defineStore('users', () => {
         }
     }
 
+    const disconnectUser = async () => {
+        await useAuthStore().logout()
+        await clearSessionStorage()
+    }
+
     const userConnected = computed(() => currentUser.value)
     const currentUserByLdap = computed(() => userByLdap.value)
 
     return {
         initializeUser,
+        disconnectUser,
         getUsers,
         getCurrentUser,
         getUserByLdap,
