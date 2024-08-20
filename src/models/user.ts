@@ -6,7 +6,7 @@ export interface User {
     email: string
     lastOrganizedBreakfastDate?: Date | null
     nextOrganizedBreakfastDate: string | null
-    numberOfBreakFastOrganised?: number
+    numberOfBreakFastOrganised: number
     roles?: Role[]
     creationDate?: Date
     login: {

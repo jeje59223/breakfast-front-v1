@@ -13,11 +13,7 @@ const email = ref<string>('')
 const picture = ref<string | undefined>('')
 const password = ref<string>('')
 const username = ref<string>('')
-const lastOrganizedBreakfastDate = ref()
-const nextOrganizedBreakfastDate = ref()
-const numberOfBreakFastOrganised = ref()
 const roles = ref()
-const creationDate = ref()
 
 const addUser = async () => {
   try {
