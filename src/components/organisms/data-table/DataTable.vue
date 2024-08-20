@@ -30,7 +30,7 @@ const picture = ref<string | undefined>('')
 const password = ref<string>('')
 const username = ref<string>('')
 const nextDate = ref<string | null>()
-const nbBreakfast = ref<number | undefined>(0)
+const nbBreakfast = ref<number>(0)
 const isLoadingDate = ref<boolean>(false)
 const dialog = ref<boolean>(false)
 const deleteDateDialog = ref<boolean>(false)
@@ -105,7 +105,7 @@ const getUserId = async (id: User['ldap'], date: string | undefined ) => {
       email: email.value,
       lastOrganizedBreakfastDate: currentUserByLdap.value?.lastOrganizedBreakfastDate,
       nextOrganizedBreakfastDate: isoDateString,
-      numberOfBreakFastOrganised: nbBreakfast.value && nbBreakfast.value + 1,
+      numberOfBreakFastOrganised: nbBreakfast.value + 1,
       roles: currentUserByLdap.value?.roles,
       creationDate: currentUserByLdap.value?.creationDate,
       login: {
@@ -183,7 +183,7 @@ const deleteDate = async () => {
       email: email.value,
       lastOrganizedBreakfastDate: currentUserByLdap.value?.lastOrganizedBreakfastDate,
       nextOrganizedBreakfastDate: null,
-      numberOfBreakFastOrganised: nbBreakfast.value && nbBreakfast.value - 1,
+      numberOfBreakFastOrganised: nbBreakfast.value - 1,
       roles: currentUserByLdap.value?.roles,
       creationDate: currentUserByLdap.value?.creationDate,
       login: {
@@ -237,20 +237,36 @@ const deleteCancel = async () => {
     <template v-slot:[`header.picture`]>
       PICTURE
     </template>
-    <template v-slot:[`header.lastname`]>
-      {{ i18n.global.t('datatableComponent.lastName') }}
+    <template v-slot:[`header.lastname`]="header">
+      <div class="d-flex align-center">
+        <p>{{ i18n.global.t('datatableComponent.lastName') }}</p>
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'lastname' && header.sortBy[0].order === 'asc'" icon="mdi-arrow-down" class="arrow-down" color="#037E8C" />
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'lastname' && header.sortBy[0].order === 'desc'" icon="mdi-arrow-up" class="arrow-up" size="x-small" color="#037E8C" />
+      </div>
+
     </template>
-    <template v-slot:[`header.firstname`]>
-      {{ i18n.global.t('datatableComponent.firstname') }}
+    <template v-slot:[`header.firstname`]="header">
+      <div class="d-flex align-center">
+        <p>{{ i18n.global.t('datatableComponent.firstname') }}</p>
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'firstname' && header.sortBy[0].order === 'asc'" class="arrow-down" icon="mdi-arrow-down" color="#037E8C" />
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'firstname' && header.sortBy[0].order === 'desc'" class="arrow-up" icon="mdi-arrow-up" color="#037E8C" />
+      </div>
     </template>
-    <template v-slot:[`header.numberOfBreakFastOrganised`]>
-      TOTAL BREAKFAST
+    <template v-slot:[`header.numberOfBreakFastOrganised`]="header">
+      <div class="d-flex align-center">
+        <p>TOTAL BREAKFAST</p>
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'numberOfBreakFastOrganised' && header.sortBy[0].order === 'asc'" class="arrow-down" icon="mdi-arrow-down" color="#037E8C" />
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'numberOfBreakFastOrganised' && header.sortBy[0].order === 'desc'" class="arrow-up" icon="mdi-arrow-up" color="#037E8C" />
+      </div>
     </template>
-    <template v-slot:[`header.nextOrganizedBreakfastDate`]>
-      {{ i18n.global.t('datatableComponent.nextBreakfastDate') }}
+    <template v-slot:[`header.nextOrganizedBreakfastDate`]="header">
+      <div class="d-flex align-center">
+        <p>{{ i18n.global.t('datatableComponent.nextBreakfastDate') }}</p>
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'nextOrganizedBreakfastDate' && header.sortBy[0].order === 'asc'" class="arrow-down" icon="mdi-arrow-down" color="#037E8C" />
+        <v-icon v-if="header.sortBy.length > 0 && header.sortBy[0].key === 'nextOrganizedBreakfastDate' && header.sortBy[0].order === 'desc'" class="arrow-up" icon="mdi-arrow-up" color="#037E8C" />
+      </div>
     </template>
     <template v-slot:[`header.actions`]></template>
-
     <template v-slot:[`item.picture`]="{ item }">
       <img :src="item.picture" width="40" height="40" class="datatable-user-picture"  :alt="`Avatar de ${item.firstname}`"/>
     </template>
@@ -261,7 +277,7 @@ const deleteCancel = async () => {
       {{ item.firstname }}
     </template>
     <template v-slot:[`item.numberOfBreakFastOrganised`]="{ item }">
-      <Chip v-if="item.numberOfBreakFastOrganised" color="#037E8C" density="default" tnr-id="" :label="true" :text="item?.numberOfBreakFastOrganised.toString()" />
+      <Chip color="#037E8C" density="default" tnr-id="" :label="true" :text="item?.numberOfBreakFastOrganised.toString()" />
     </template>
     <template v-slot:[`item.nextOrganizedBreakfastDate`]="{ item }">
       <div v-if="isLoadingDate" class="d-flex justify-center">
@@ -369,5 +385,9 @@ const deleteCancel = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.arrow-down, .arrow-up {
+  font-size: 20px;
 }
 </style>
