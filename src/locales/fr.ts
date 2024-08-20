@@ -3,7 +3,7 @@ export default {
     hideResponse: 'Cacher la réponse',
     jokeOfDay: 'Blague du jour !',
     seeResponse: 'Voir la réponse',
-    title: 'Bienvenue sur l\'application Petit-Déjeuner',
+    title: 'BIENVENUE SUR L\'APPLICATION PETIT-DEJEUNER',
   },
   breakfastPageComponent: {
     title: 'GESTION DES PETITS-DEJEUNERS',

@@ -62,7 +62,6 @@
 body {
   display: flex;
   justify-content: center;
-  min-height: 100vh;
   color: var(--color-background-mute);
   background: var(--color-background);
   transition:

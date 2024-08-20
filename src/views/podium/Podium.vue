@@ -4,6 +4,7 @@ import { fakeUsers2 } from '../../../tests/data/user'
 import { onBeforeMount, ref } from 'vue'
 import i18n from '@/i18n'
 import type { User } from '@/models/user'
+import Title from '@/components/atoms/title/Title.vue'
 
 const first = ref<string>('')
 const second = ref<string>('')
@@ -21,9 +22,9 @@ onBeforeMount(() => {
 
 </script>
 <template>
+  <Title :text="i18n.global.t('podium.title')" />
   <div class="Top-container justify-center align-center d-flex">
     <div class="Top-container--podium" >
-      <h1>{{ i18n.global.t('podium.title') }}</h1>
       <img src="@/assets/podium.png" alt="podium">
       <div class="Top-container--number-one">{{ first }}</div>
       <div class="Top-container--number-two">{{ second }}</div>

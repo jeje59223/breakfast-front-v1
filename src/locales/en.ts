@@ -3,7 +3,7 @@ export default {
     hideResponse: 'Hide response',
     jokeOfDay: 'Joke of day!',
     seeResponse: 'See response',
-    title: 'Welcome to Breakfast Application',
+    title: 'WELCOME TO BREAKFAST APPLICATION',
   },
   breakfastPageComponent: {
     title: 'BREAKFAST MANAGEMENT',

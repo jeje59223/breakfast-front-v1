@@ -6,6 +6,7 @@ import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import type { User } from '@/models/user'
 import { useRoute } from 'vue-router'
+import Title from '@/components/atoms/title/Title.vue'
 const { getUserByLdap, updateUser, getUsers } = useUsersStore()
 const { currentUserByLdap } = storeToRefs(useUsersStore())
 const route = useRoute()
@@ -90,7 +91,7 @@ const onFileChange = (event: Event) => {
 </script>
 
 <template>
-  <h1 class="text-center mb-12">ACCOUNT PAGE</h1>
+  <Title text="ACCOUNT PAGE" />
   <v-alert v-if="isSuccess" text="Utilisateur mis à jour avec succès" title="Mise à jour" type="success" class="mb-12" closable @click:close="isSuccess = false" />
   <div class="d-flex user-infos">
     <img v-if="!isPictureLoading" :src="picture" alt="Image depuis Google Drive"/>
@@ -173,13 +174,11 @@ const onFileChange = (event: Event) => {
 .user-infos {
   align-items: center;
   gap: 50px;
-  img {
-    border-radius: 50%;
-    width: 300px;
-    height: 300px;
-  }
+  margin-left: 50px;
+  padding: 2rem;
+  margin-top: 150px;
 
-  iframe {
+  img {
     border-radius: 50%;
     width: 300px;
     height: 300px;

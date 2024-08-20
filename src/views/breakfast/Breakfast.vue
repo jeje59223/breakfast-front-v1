@@ -7,6 +7,7 @@ import BottomBarActions from '@/components/molecules/bottom-bar-actions/BottomBa
 import i18n from '@/i18n'
 import router from '@/router'
 import { Role, type User } from '@/models/user'
+import Title from '@/components/atoms/title/Title.vue'
 
 const { users, currentUser } = storeToRefs(useUsersStore())
 const { getUsers } = useUsersStore()
@@ -32,7 +33,7 @@ const saveTheNextBreakfastDate = async () => {
 </script>
 
 <template>
-  <h1 v-if="!isLoading" class="text-center mt-16 mb-4">{{ i18n.global.t('breakfastPageComponent.title') }}</h1>
+  <Title v-if="!isLoading" :text="i18n.global.t('breakfastPageComponent.title')" />
   <div class="overflow-auto breakfast-page" tnr-id="breakfast-page">
     <DataTable v-if="!isLoading" :users="users" />
     <v-overlay v-model="isLoading" class="is-loading">
@@ -51,8 +52,11 @@ const saveTheNextBreakfastDate = async () => {
 
 <style scoped>
 .breakfast-page {
+  justify-content: center;
   margin-left: 50px;
   margin-bottom: 80px;
+  padding: 2rem;
+  margin-top: 150px;
 }
 
 .is-loading {
