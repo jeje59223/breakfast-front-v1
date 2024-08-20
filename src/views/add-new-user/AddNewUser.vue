@@ -4,6 +4,7 @@ import i18n from '@/i18n';
 import BottomBarActions from '@/components/molecules/bottom-bar-actions/BottomBarActions.vue'
 import type { User } from '@/models/user'
 import { useUsersStore } from '@/stores/users'
+import Title from '@/components/atoms/title/Title.vue'
 
 const { addNewUser, getUsers } = useUsersStore()
 const firstname = ref<string>('')
@@ -60,7 +61,7 @@ const onFileChange = (event: Event) => {
 };
 </script>
 <template>
-  <h1 class="text-center mb-12">ADD NEW USER</h1>
+  <Title text="ADD NEW USER" />
   <div class="add-new-user-page-container">
     <div class="add-new-user-page-container__left">
       <v-text-field
@@ -120,9 +121,12 @@ const onFileChange = (event: Event) => {
 </template>
 <style lang="scss">
 .add-new-user-page-container {
-  width: 100%;
   display: flex;
   gap: 20px;
+  margin-top: 150px;
+  margin-left: 50px;
+  margin-bottom: 80px;
+  padding: 2rem;
 
   &__left {
     width: 50%;

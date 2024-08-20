@@ -6,6 +6,7 @@ import i18n from '@/i18n'
 import { storeToRefs } from 'pinia'
 import { useLocaleStore } from '@/stores/locale'
 import { useUsersStore } from '@/stores/users'
+import Title from '@/components/atoms/title/Title.vue'
 
 const { joke, getRandomJoke, isLoading } = useJokesStore()
 const displayResponse = ref<boolean>(false)
@@ -44,9 +45,9 @@ watch(() => currentLocale.value, async () => {
 </script>
 
 <template>
+  <Title :text="i18n.global.t('homePageComponent.title')" tnr-id="home-page-title" />
   <div class="home-page d-flex justify-center" tnr-id="home-page">
     <div tnr-id="home-page-container" class="mt-12 home-page-container justify-center">
-      <h1 tnr-id="home-page-title">{{ i18n.global.t('homePageComponent.title') }}</h1>
       <div class="joke" tnr-id="home-page-joke-container">
         <h2 class="joke-title" tnr-id="home-page-joke-container-title">{{ i18n.global.t('homePageComponent.jokeOfDay') }}</h2>
         <div>
@@ -66,11 +67,9 @@ watch(() => currentLocale.value, async () => {
 </template>
 
 <style lang="scss" scoped>
-h1 {
-  text-align: center;
-}
 .home-page {
   width: 100%;
+  margin-top: 150px;
 }
 
 .home-page-container {
