@@ -3,9 +3,14 @@ import { nextTick, ref, watch } from 'vue'
 import Button from '@/components/atoms/button/Button.vue'
 
 const props = defineProps<{
+  icon?: string
   title?: string
   content?: string
   displayDialog?: boolean
+  displayButtonAction?: boolean
+  labelButtonAction?: string
+  displayCancelButton?: boolean
+  labelCancelButton?: string
 }>()
 
 const emit = defineEmits<{
@@ -46,7 +51,7 @@ const deleteCancel = () => {
           class="delete-dialog"
       >
         <v-card-title class="d-flex align-center">
-          <v-icon icon="mdi-delete-outline" />
+          <v-icon :icon="props.icon" />
           <p class="ml-4 text-red-accent-4">{{ props.title }}</p>
         </v-card-title>
         <v-card-text class="text-black">
@@ -54,13 +59,15 @@ const deleteCancel = () => {
         </v-card-text>
         <v-card-actions class="d-flex justify-end mt-2">
           <Button
-              text="Delete"
+              v-if="props.displayButtonAction"
+              :text="props.labelButtonAction"
               variant="elevated"
               color="#037E8C"
               @click="deleteUserByLdap"
           />
           <Button
-              text="Cancel"
+              v-if="props.displayCancelButton"
+              :text="props.labelCancelButton"
               variant="outlined"
               @click="deleteCancel"
           />

@@ -55,7 +55,7 @@ describe('HomePage', () => {
         const title = wrapper.find('[tnr-id="home-page-title"]')
 
         expect(title.exists()).toBeTruthy()
-        expect(title.text()).toBe('Bienvenue sur l\'application Petit-Déjeuner')
+        expect(title.text()).toBe('BIENVENUE SUR L\'APPLICATION PETIT-DEJEUNER')
     })
 
     it('should display question title with good text', () => {

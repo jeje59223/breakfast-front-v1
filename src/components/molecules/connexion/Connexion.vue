@@ -9,6 +9,7 @@ const router = useRouter()
 const visible = ref(false)
 const ldap = ref<string>('')
 const password = ref<string>('')
+const isLoading = ref<boolean>(false)
 const { getCurrentUser, initializeUser } = useUsersStore()
 
 onMounted(async () => {
@@ -16,18 +17,24 @@ onMounted(async () => {
 })
 
 const loginCurrentUser = async (pseudo: string, pws: string) => {
+  isLoading.value = true
   try {
     await getCurrentUser(pseudo, pws)
 
     await router.push({ name: 'home' })
   } catch (error) {
     console.error('Erreur lors de la connexion :', error)
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
 
 <template>
-    <v-card class="mx-auto px-6 py-8 mt-12 connexion" tnr-id="connexion-card">
+  <v-overlay v-model="isLoading" class="is-loading">
+    <v-progress-circular :size="150" color="#287F8C" indeterminate></v-progress-circular>
+  </v-overlay>
+    <v-card class="mx-auto px-6 py-8 connexion" tnr-id="connexion-card">
       <v-form>
         <v-text-field v-model="ldap" class="mb-2" label="LDAP" :clearable="true" tnr-id="connexion-card-ldap-field" />
         <v-text-field
@@ -60,7 +67,7 @@ const loginCurrentUser = async (pseudo: string, pws: string) => {
 .connexion {
   width: 35%;
   min-width: 400px;
-  padding-top: 150px;
+  margin-top: 150px;
 }
 
 .signup-link {
@@ -72,5 +79,11 @@ const loginCurrentUser = async (pseudo: string, pws: string) => {
 .login-btn {
   width: 100%;
   margin-bottom: 25px;
+}
+
+.is-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
