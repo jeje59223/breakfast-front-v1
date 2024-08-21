@@ -32,6 +32,7 @@ const username = ref<string>('')
 const nextDate = ref<string | null>()
 const nbBreakfast = ref<number>(0)
 const isLoadingDate = ref<boolean>(false)
+const isErrorDate = ref<boolean>(false)
 const dialog = ref<boolean>(false)
 const deleteDateDialog = ref<boolean>(false)
 
@@ -85,6 +86,10 @@ const getUserId = async (id: User['ldap'], date: string | undefined ) => {
   try {
     isLoadingDate.value = true
     await getUserByLdap(id)
+    if (currentUserByLdap.value?.nextOrganizedBreakfastDate) {
+      isErrorDate.value = true
+      return
+    }
     if (currentUserByLdap.value) {
       firstname.value = currentUserByLdap.value?.firstname
       lastname.value = currentUserByLdap.value?.lastname
@@ -231,8 +236,6 @@ const deleteCancel = async () => {
       :headers="headers"
       :items-per-page-options="itemsPerPageOptions"
       hover
-      sort-asc-icon="mdi-arrow-up"
-      sort-desc-icon="mdi-arrow-down"
   >
     <template v-slot:[`header.picture`]>
       PICTURE
@@ -358,7 +361,12 @@ const deleteCancel = async () => {
   </v-overlay>
   <Dialog
       :display-dialog="dialog"
+      display-button-action
+      display-cancel-button
+      label-button-action="Delete"
+      label-cancel-button="Cancel"
       title="Delete this user"
+      icon="mdi-delete-outline"
       content="Voulez-vous vraiment supprimer cet utilisateur ?"
       @confirm="deleteUserByLdap"
       @cancel="deleteCancel"
@@ -366,11 +374,27 @@ const deleteCancel = async () => {
   />
   <Dialog
       :display-dialog="deleteDateDialog"
+      display-button-action
+      display-cancel-button
+      label-button-action="Delete"
+      label-cancel-button="Cancel"
       title="Delete this date"
+      icon="mdi-delete-outline"
       content="Voulez-vous vraiment supprimer cette date ?"
       @confirm="deleteDate"
       @cancel="closeDeleteDateDialog"
       @update:displayDialog="deleteDateDialog = $event"
+  />
+  <Dialog
+      :display-dialog="isErrorDate"
+      :display-button-action="false"
+      display-cancel-button
+      label-cancel-button="Ok"
+      icon="mdi-alert"
+      title="Vous avez déjà une date de prévue"
+      content="Vous devez supprimer votre prochaine date de breakfast avant d'en choisir une nouvelle"
+      @cancel="isErrorDate = false"
+      @update:displayDialog="isErrorDate = $event"
   />
 </template>
 

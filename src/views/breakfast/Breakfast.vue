@@ -15,6 +15,7 @@ const userConnected = ref<User | undefined>(currentUser.value)
 const isLoading = ref<boolean>(false)
 
 onBeforeMount(async () => {
+  isLoading.value = true
   try {
     if (!users.value.length) {
       isLoading.value = true
